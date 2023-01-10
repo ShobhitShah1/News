@@ -31,8 +31,8 @@ export const SIZES = {
     body4: 14,
     body5: 12,
 
-    // app dimensions
-    width,
+    // app dimensions 
+    width, 
     height
 };
 export const FONTS = {

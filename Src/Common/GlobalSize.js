@@ -15,4 +15,4 @@ export function normalize(size) {
     } else {
         return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
     }
-}
+} 

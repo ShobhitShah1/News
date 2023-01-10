@@ -22,7 +22,7 @@ export default function AKIONavigation() {
                 <Stack.Screen name='Signup' component={SignUpScreen} />
             </Stack.Navigator>
         )
-    }
+    } 
 
     const Stack = createNativeStackNavigator();
 
