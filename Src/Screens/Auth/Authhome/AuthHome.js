@@ -1,18 +1,20 @@
-import { StyleSheet, Text, View, Animated, FlatList, Dimensions } from 'react-native'
-import React from 'react'
-import Icons from '../../../Common/Icons';
-import { COLORS, FAMILY, FONTS, SIZES } from '../../../Common/Global';
-import AuthData from '../../../Components/AuthData';
-import AuthPaggination from '../../../Components/AuthComponents/AuthPaggination';
-import Images from '../../../Common/Images';
-import { normalize } from '../../../Common/GlobalSize';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Animated, Dimensions, FlatList, StyleSheet, Text, View } from 'react-native';
 import ButtonView from '../../../Common/AuthComponents/ButtonView';
+import { COLORS, FAMILY, FONTS } from '../../../Common/Global';
+import { normalize } from '../../../Common/GlobalSize';
+import Images from '../../../Common/Images';
+import AuthPaggination from '../../../Components/AuthComponents/AuthPaggination';
+import AuthData from '../../../Components/AuthData';
 
 const { width } = Dimensions.get('window')
 
 export default function AuthHome() {
 
-    const [currentIndex, setcurrentIndex] = React.useState(0)
+    const [currentIndex, setcurrentIndex] = React.useState(0);
+    const [darkModeStatus, setdarkModeStatus] = React.useState(0);
+    const navigation = useNavigation();
 
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
@@ -20,6 +22,7 @@ export default function AuthHome() {
         setcurrentIndex(viewableItems[0].index);
     }).current;
 
+    const headerText = ["<h1>One Click Away From Your Destination 🚀</h1>", "<h1>Enjoy Your Stay With Desh..</h1>", "<h1>Hope You Have Grate Time With US...</h1>", "<h1>Give Me Your Detail FAST</h1>"];
     const viewConfig = React.useRef({ viewAreaCoveragePercentThreshold: 50 }).current
 
     const ref = React.useRef()
@@ -53,11 +56,13 @@ export default function AuthHome() {
                         style={styles.headerImage}
                         source={Images.AuthHome}
                     />
-                    <Animated.Text
-                        style={styles.headerText}
-                    >
-                        One Click Away From Your Destination 🚀
-                    </Animated.Text>
+                    <Animated.View style={styles.text}>
+                        <Animated.Text
+                            style={styles.headerText}
+                        >
+                            {headerText[currentIndex]}
+                        </Animated.Text>
+                    </Animated.View>
                 </Animated.View>
             </Animated.View>
 
@@ -83,16 +88,18 @@ export default function AuthHome() {
                 <ButtonView
                     index={currentIndex}
                     onPressSkip={() => {
-
+                        navigation.navigate('Auth', { screen: 'SignUp' })
                     }}
                     onPressNext={() => {
                         if (currentIndex < 3) {
                             ref?.current.scrollToIndex({ index: currentIndex + 1 })
                         }
+                        if (currentIndex === 3) {
+                            navigation.navigate('Auth', { screen: 'SignUp' })
+                        }
                     }}
                 />
             </Animated.View>
-
         </Animated.View>
     )
 }
@@ -102,10 +109,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.white
     },
-    contain:{
+    contain: {
         flex: 1,
         justifyContent: 'center',
-        alignSelf:'center'
+        alignSelf: 'center',
     },
     topView: {
         flex: 0.7,
@@ -118,11 +125,17 @@ const styles = StyleSheet.create({
         height: normalize(250),
         margin: normalize(30)
     },
+    text: {
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignSelf: 'center'
+    },
     headerText: {
+        height: normalize(50),
         textAlign: 'center',
         ...FONTS.h1,
         color: COLORS.black,
-        marginTop: normalize(25)
+        marginTop: normalize(25),
     },
     bottomView: {
         flex: 0.3,
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
         width: width - normalize(50),
         justifyContent: 'center',
         alignSelf: 'center',
-        fontFamily: FAMILY.PoppinsBold, 
+        fontFamily: FAMILY.PoppinsBold,
         fontSize: 19,
     }
 })

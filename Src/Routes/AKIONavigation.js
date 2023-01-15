@@ -20,8 +20,8 @@ export default function AKIONavigation() {
                 headerShown: false
             }}>
                 <Stack.Screen name='AuthHome' component={AuthHome} />
-                <Stack.Screen name='Signin' component={SignInScreen} />
-                <Stack.Screen name='Signup' component={SignUpScreen} />
+                <Stack.Screen name='SignIn' component={SignInScreen} />
+                <Stack.Screen name='SignUp' component={SignUpScreen} />
             </Stack.Navigator>
         )
     } 

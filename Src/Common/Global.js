@@ -6,6 +6,14 @@ export const COLORS = {
     secondary: "#5D2DFD",
 
     white: "#fff",
+    textInputBackground: "#f5f7fc",
+    textInputBorder: "#cad6fa",
+    activeBorderColor: "#015cf5",
+    socialButton: "#f9f9fd",
+    socialButtonBorder: "#d9def2",
+    facebook: "#3b5998",
+    google: "#4285F4",
+    twitter: "#00acee",
     tinBlack: "#1e1d2e",
     pagginColor: "#505062",
     skipBTN: "#404855",
@@ -55,6 +63,11 @@ export const FAMILY = {
     PoppinsRegular: "Poppins-Regular",
 }
 
-const Global = { COLORS, SIZES, FONTS, FAMILY };
+export const DimensionsSize = {
+    width: width,
+    height: height,
+}
+
+const Global = { COLORS, SIZES, FONTS, FAMILY, DimensionsSize };
 
 export default Global;

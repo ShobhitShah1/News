@@ -1,6 +1,7 @@
-import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
-import { FONTS, SIZES, COLORS } from './Global'
+import { Animated, Dimensions, StyleSheet, TextInput } from 'react-native'
+import { COLORS, FAMILY, SIZES } from './Global'
+import { normalize } from './GlobalSize'
 
 const { width, height } = Dimensions.get('window')
 
@@ -9,24 +10,62 @@ const CommonTextInput = ({
     value,
     placeholderTextColor,
     onChangeText,
+    renderRightView,
+    secureTextEntry,
+    customStyleView,
+    onFocus,
+    onBlur
 }) => {
     return (
-        <TextInput
-            style={styles.Textinput}
-            value={value}
-            onChangeText={onChangeText}
-            placeholder={placeholder}
-            placeholderTextColor={placeholderTextColor}
-        />
+        <Animated.View style={[styles.View, {...customStyleView}]}>
+            <Animated.View style={[styles.textInputView]}>
+                <TextInput
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    style={styles.Textinput}
+                    value={value}
+                    onChangeText={onChangeText}
+                    placeholder={placeholder}
+                    placeholderTextColor={placeholderTextColor}
+                    secureTextEntry={secureTextEntry}
+                />
+            </Animated.View>
+            <Animated.View style={styles.renderRightView}>
+                {renderRightView}
+            </Animated.View>
+        </Animated.View>
     )
 }
 
 
 const styles = StyleSheet.create({
-
+    View: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: width - normalize(50),
+        height: 50,
+        backgroundColor: COLORS.textInputBackground,
+        borderWidth: 1,
+        borderColor: COLORS.textInputBorder, //activeBorderColor
+        borderRadius: SIZES.radius
+    },
     Textinput: {
-        fontFamily: "Poppins-Bold",
-        color: COLORS.white,
+        top: 2,
+        fontFamily: FAMILY.PoppinsRegular,
+        color: COLORS.tinBlack,
+        fontSize: 17
+    },
+    textInputView: {
+        width: '85%',
+        marginLeft: '5%',
+        justifyContent: 'center',
+        alignContent: 'center'
+    },
+    renderRightView: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        width: '10%',
+        alignItems: 'center'
     }
 })
 

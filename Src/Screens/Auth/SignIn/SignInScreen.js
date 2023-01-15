@@ -1,126 +1,147 @@
-// import React, { useState, useEffect } from 'react';
-// import { View, TextInput, Animated, StyleSheet } from 'react-native';
-
-// export const SignInScreen = () => {
-//     const [placeholder, setPlaceholder] = useState('Enter your name');
-//     const [animatedValue] = useState(new Animated.Value(0));
-//     const [placeholders] = useState(['Enter your name', 'Enter your email', 'Enter your phone number']);
-//     const [placeholderIndex, setPlaceholderIndex] = useState(0);
-
-//     // useEffect(() => {
-//     //     Animated.timing(animatedValue, {
-//     //         toValue: 1,
-//     //         duration: 500,
-//     //         useNativeDriver: true,
-//     //     }).start(() => {
-//     //         setTimeout(() => {
-//     //             setPlaceholderIndex((placeholderIndex + 1) % placeholders.length);
-//     //             setPlaceholder(placeholders[placeholderIndex]);
-//     //             animatedValue.setValue(0);
-//     //         }, 5000);
-//     //     });
-//     // }, [placeholderIndex]);
-
-//     // const placeholderOpacity = animatedValue.interpolate({
-//     //     inputRange: [0, 1],
-//     //     outputRange: [1, 0],
-//     // });
-
-//     return (
-//         <Animated.View style={styles.container}>
-//             <Animated.TextInput
-//                 style={styles.input}
-//                 placeholder={placeholder}
-//             // placeholderOpacity={placeholderOpacity}
-//             />
-//         </Animated.View>
-//     );
-// };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//     },
-//     input: {
-//         width: '80%',
-//         padding: 12,
-//         marginBottom: 20,
-//         backgroundColor: '#fff',
-//         borderRadius: 5,
-//         fontSize: 18,
-//     },
-// });
-
-
-import { Alert, Animated, Button, Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { COLORS, FONTS, SIZES } from '../../../Common/Global'
-import { SubmitButton } from '../../../Common/SubmitButton'
-import CheckBox from '../../../Common/CheckBox'
-import {
-    GoogleSignin,
-    GoogleSigninButton,
-    statusCodes,
-} from '@react-native-google-signin/google-signin';
-import { TopView } from '../../../Common/AuthComponents/TopView'
+import React from 'react';
+import { Animated, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CommonTextInput from '../../../Common/CommonTextInput';
+import { COLORS, FAMILY, FONTS, SIZES } from '../../../Common/Global';
+import { normalize } from '../../../Common/GlobalSize';
+import Images from '../../../Common/Images';
+import OrView from '../../../Common/AuthComponents/OrView';
+import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
+import AuthButton from '../../../Common/AuthComponents/AuthButton';
 
 const { width, height } = Dimensions.get('window')
 
-export default function SignInScreen() {
+export default function SignInScreen({ navigation }) {
 
+
+    const [darkModeStatus, setdarkModeStatus] = React.useState(false);
     const [Email, setEmail] = React.useState(null);
+    const [showPassword, setshowPassword] = React.useState(true);
+
+    const [isNameFocused, setisNameFocused] = React.useState(false)
+    const [isEmailFocused, setisEmailFocused] = React.useState(false)
+    const [isPasswordFocused, setisPasswordFocused] = React.useState(false)
 
     const [tearmsCheck, settearmsCheck] = React.useState(false);
     const [HeaderMeme, setHeaderMeme] = React.useState(false);
-    const [UserData, setUserData] = React.useState(null)
+    const [UserData, setUserData] = React.useState(null);
 
-    GoogleSignin.configure({
-        scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-        webClientId: '783248165978-s0t5jh52ncpija7mak48p3pfps8ukpcv.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-        offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-        hostedDomain: '', // specifies a hosted domain restriction
-        forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-        accountName: '', // [Android] specifies an account name on the device that should be used
-        iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-        googleServicePlistPath: '', // [iOS] if you renamed your GoogleService-Info file, new name here, e.g. GoogleService-Info-Staging
-        openIdRealm: '', // [iOS] The OpenID2 realm of the home web server. This allows Google to include the user's OpenID Identifier in the OpenID Connect ID token.
-        profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
-    });
 
-    const signIn = async () => {
-        try {
-            await GoogleSignin.hasPlayServices();
-            const userInfo = await GoogleSignin.signIn();
-            setUserData(userInfo)
-        } catch (error) {
-            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                // user cancelled the login flow
-            } else if (error.code === statusCodes.IN_PROGRESS) {
-                // operation (e.g. sign in) is in progress already
-            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                // play services not available or outdated
-            } else {
-                // some other error happened
-            }
-        }
-    };
+    const handleFocusName = () => setisNameFocused(true)
+    const handleBlurName = () => setisNameFocused(false)
+
+    const handleFocusEmail = () => setisEmailFocused(true)
+    const handleBlurEmail = () => setisEmailFocused(false)
+
+    const handleFocusPassword = () => setisPasswordFocused(true)
+    const handleBlurPassword = () => setisPasswordFocused(false)
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: darkModeStatus === true ? COLORS.tinBlack : COLORS.white, }]}>
 
-            <View style={styles.headerView}>
-                <Text style={styles.headerText}>Welcome 🐒</Text>
-            </View>
+            <ScrollView>
 
-            <TopView
-                value={Email}
-                onChangeText={(value) => setEmail(value)}
-                placeholder={"Your Email"}
-            />
+                <Animated.View style={styles.headerContainer}>
+                    <Animated.View style={styles.headerView}>
+                        <Animated.Image
+                            source={Images.SignIn2}
+                            style={styles.images}
+                        />
+                    </Animated.View>
 
-            <View style={styles.ButtonView}>
+                    <Animated.View style={styles.headerTextView}>
+                        <Animated.Text style={styles.headerText}>Welcome back!</Animated.Text>
+                    </Animated.View>
+                </Animated.View>
+
+                <KeyboardAvoidingView>
+
+                    {/* Name View */}
+
+                    <Animated.View style={{ width: width }}>
+
+
+                        {/* Email View */}
+
+
+                        <Animated.View style={styles.stackview}>
+                            <Animated.View style={styles.inputheaderView}>
+                                <Animated.Text style={styles.inputheaderText}>E-mail address</Animated.Text>
+                            </Animated.View>
+
+                            <Animated.View style={styles.fillDetailView}>
+                                <CommonTextInput
+                                    onFocus={handleFocusEmail}
+                                    onBlur={handleBlurEmail}
+                                    customStyleView={{ borderColor: isEmailFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
+                                    placeholder={"Enter email address"}
+                                    placeholderTextColor={COLORS.tinBlack}
+                                    renderRightView={
+                                        <Animated.View>
+                                            <MaterialIcons name="alternate-email" color={COLORS.tinBlack} size={20} />
+                                        </Animated.View>
+                                    }
+                                />
+                            </Animated.View>
+                        </Animated.View>
+
+
+                        {/* Password View */}
+
+                        <Animated.View style={styles.stackview}>
+                            <Animated.View style={[styles.inputheaderView, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+                                <Animated.Text style={styles.inputheaderText}>Password</Animated.Text>
+                                <TouchableOpacity>
+                                <Animated.Text style={styles.ForgotText}>Forgot password?</Animated.Text>
+                                </TouchableOpacity>
+                            </Animated.View>
+
+                            <Animated.View style={styles.fillDetailView}>
+                                <CommonTextInput
+                                    onFocus={handleFocusPassword}
+                                    onBlur={handleBlurPassword}
+                                    customStyleView={{ borderColor: isPasswordFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
+                                    secureTextEntry={showPassword}
+                                    checkPassword={true}
+                                    placeholder={"Enter your password"}
+                                    placeholderTextColor={COLORS.tinBlack}
+                                    renderRightView={
+                                        <TouchableOpacity onPress={() => {
+                                            setshowPassword(!showPassword)
+                                        }}>
+                                            {showPassword ? (
+                                                <Ionicons name="eye-off-outline" color={COLORS.tinBlack} size={20} />
+                                            ) : (
+                                                <Ionicons name="eye-outline" color={COLORS.tinBlack} size={20} />
+                                            )
+                                            }
+
+                                        </TouchableOpacity>
+                                    }
+                                />
+                            </Animated.View>
+                        </Animated.View>
+                    </Animated.View>
+                </KeyboardAvoidingView>
+
+                <OrView />
+
+                <SocialButtons />
+
+                <View style={styles.BottomView}>
+                    <View style={styles.AuthButtonView}>
+                        <AuthButton lable={"Log in"} />
+                    </View>
+
+                    <View style={styles.haveAnAccountView}>
+                        <Text style={styles.haveAnAccountText}>Don't have an account?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('Auth', { screen: 'SignUp' })}><Text style={[styles.haveAnAccountText, { color: COLORS.twitter }]}> Sign up now.</Text></TouchableOpacity>
+                    </View>
+                </View>
+
+                {/* <View style={styles.ButtonView}>
                 <CheckBox
                     contentContainerStyle={{
                         marginTop: SIZES.radius,
@@ -141,7 +162,9 @@ export default function SignInScreen() {
                         color: tearmsCheck == false ? COLORS.white : COLORS.black
                     }}
                 />
-            </View>
+            </View> */}
+
+            </ScrollView>
         </View>
     )
 }
@@ -149,22 +172,78 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
     ButtonView: {
         position: 'absolute',
-        bottom: 20,
+        bottom: normalize(20),
         alignItems: 'center',
         justifyContent: 'center',
     },
     container: {
         flex: 1,
-        backgroundColor: COLORS.primary,
         alignItems: 'center',
+    },
+    headerContainer: {
+        width: width
+    },
+    darkmodeView: {
+        justifyContent: 'flex-end',
+        alignSelf: 'flex-end',
+        top: 10
     },
     headerView: {
         justifyContent: 'center',
         alignSelf: 'center',
-        top: 30
+    },
+    images: {
+        width: width,
+        height: normalize(200)
+    },
+    headerTextView: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        margin: SIZES.padding
     },
     headerText: {
         ...FONTS.h1,
-        color: COLORS.white
+        color: COLORS.tinBlack
     },
+    fillDetailView: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
+    stackview: {
+        marginTop: normalize(8)
+    },
+    inputheaderView: {
+        marginHorizontal: normalize(25),
+        marginVertical: normalize(5),
+        justifyContent: 'center',
+    },
+    inputheaderText: {
+        color: COLORS.tinBlack,
+        fontFamily: FAMILY.PoppinsRegular,
+        fontSize: 15
+    },
+    ForgotText:{
+        color: COLORS.tinBlack,
+        fontFamily: FAMILY.PoppinsRegular,
+        fontSize: 15,
+        textDecorationLine: 'underline'
+    },
+    AuthButtonView: {
+        marginTop: normalize(15)
+    },
+    haveAnAccountView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        margin: 10
+    },
+    haveAnAccountText: {
+        fontFamily: FAMILY.PoppinsRegular,
+        color: COLORS.tinBlack
+    },
+    BottomView: {
+        marginVertical: 10
+        // position: 'absolute',
+        // bottom: 0
+    }
 })
