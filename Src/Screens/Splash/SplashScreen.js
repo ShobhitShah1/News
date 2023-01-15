@@ -7,7 +7,7 @@ export default function SplashScreen({navigation}) {
  
     useEffect(() => {
         setTimeout(() => {
-            navigation.navigate('Auth',{screen: 'Signin'})
+            navigation.replace('Auth',{screen: 'AuthHome'})
         }, 3800);
     }, [])
 

@@ -46,7 +46,8 @@ const CheckBox = ({
                 flex: 1,
                 marginLeft: SIZES.base,
                 ...FONTS.body5,
-                marginTop: 3
+                marginTop: 3,
+                color: COLORS.white
             }}>
                 By checking this box you agree out SCAM..
             </Text>

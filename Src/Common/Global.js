@@ -6,6 +6,9 @@ export const COLORS = {
     secondary: "#5D2DFD",
 
     white: "#fff",
+    tinBlack: "#1e1d2e",
+    pagginColor: "#505062",
+    skipBTN: "#404855",
     black: "#000000",
     green: "#37E39F",
     red: "#F9A8BA",
@@ -32,7 +35,7 @@ export const SIZES = {
     body5: 12,
 
     // app dimensions 
-    width, 
+    width,
     height
 };
 export const FONTS = {
@@ -47,6 +50,11 @@ export const FONTS = {
     body5: { fontFamily: "Poppins-Regular", fontSize: SIZES.body5, lineHeight: 22 },
 };
 
-const Global = { COLORS, SIZES, FONTS };
+export const FAMILY = {
+    PoppinsBold: "Poppins-Bold",
+    PoppinsRegular: "Poppins-Regular",
+}
+
+const Global = { COLORS, SIZES, FONTS, FAMILY };
 
 export default Global;

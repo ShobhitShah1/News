@@ -1,32 +1,32 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
-import { FONTS } from './Global'
+import { FONTS, SIZES, COLORS } from './Global'
+
+const { width, height } = Dimensions.get('window')
 
 const CommonTextInput = ({
     placeholder,
     value,
     placeholderTextColor,
     onChangeText,
-    textInputStyle,
-    containerStyle
 }) => {
     return (
-        <View>
-            <TextInput
-                style={styles.Textinput}
-                value={value}
-                onChangeText={onChangeText}
-                placeholder={placeholder}
-                placeholderTextColor={placeholderTextColor}
-            />
-        </View>
+        <TextInput
+            style={styles.Textinput}
+            value={value}
+            onChangeText={onChangeText}
+            placeholder={placeholder}
+            placeholderTextColor={placeholderTextColor}
+        />
     )
 }
- 
+
 
 const styles = StyleSheet.create({
-    Textinput:{
-        ...FONTS.h1
+
+    Textinput: {
+        fontFamily: "Poppins-Bold",
+        color: COLORS.white,
     }
 })
 

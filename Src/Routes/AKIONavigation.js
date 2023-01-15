@@ -10,6 +10,7 @@ import { normalize } from '../Common/GlobalSize'
 import SplashScreen from '../Screens/Splash/SplashScreen';
 import SignInScreen from '../Screens/Auth/SignIn/SignInScreen'
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen'
+import AuthHome from '../Screens/Auth/Authhome/AuthHome'
 
 export default function AKIONavigation() {
 
@@ -18,6 +19,7 @@ export default function AKIONavigation() {
             <Stack.Navigator screenOptions={{
                 headerShown: false
             }}>
+                <Stack.Screen name='AuthHome' component={AuthHome} />
                 <Stack.Screen name='Signin' component={SignInScreen} />
                 <Stack.Screen name='Signup' component={SignUpScreen} />
             </Stack.Navigator>
