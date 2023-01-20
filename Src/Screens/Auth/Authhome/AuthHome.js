@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     headerText: {
-        height: normalize(50),
+        // height: normalize(50),
+        marginHorizontal: normalize(10),
         textAlign: 'center',
         ...FONTS.h1,
         color: COLORS.black,

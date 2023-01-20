@@ -10,6 +10,9 @@ import Images from '../../../Common/Images';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import AuthButton from '../../../Common/AuthComponents/AuthButton';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../Redux/Actions/AuthAction';
+import auth from '@react-native-firebase/auth'
 
 const { width, height } = Dimensions.get('window')
 
@@ -17,6 +20,7 @@ export default function SignUpScreen({ navigation }) {
 
     const [darkModeStatus, setdarkModeStatus] = React.useState(false);
     const [Email, setEmail] = React.useState(null);
+    const [Password, setPassword] = React.useState(null);
     const [showPassword, setshowPassword] = React.useState(true);
 
     const [isNameFocused, setisNameFocused] = React.useState(false)
@@ -26,6 +30,10 @@ export default function SignUpScreen({ navigation }) {
     const [tearmsCheck, settearmsCheck] = React.useState(false);
     const [HeaderMeme, setHeaderMeme] = React.useState(false);
     const [UserData, setUserData] = React.useState(null);
+
+    const [isLoading, setIsLoading] = React.useState(false);
+    const borderWidthAnim = React.useRef(new Animated.Value(0)).current;
+    const borderColorAnim = React.useRef(new Animated.Value(0)).current;
 
 
     const handleFocusName = () => setisNameFocused(true)
@@ -37,10 +45,28 @@ export default function SignUpScreen({ navigation }) {
     const handleFocusPassword = () => setisPasswordFocused(true)
     const handleBlurPassword = () => setisPasswordFocused(false)
 
+    const dispatch = useDispatch();
+
+    const handleSignup = () => {
+        // auth()
+        // .createUserWithEmailAndPassword(Email, Password)
+
+        // .then((res) => {
+        //     console.log(res);
+        // })
+
+        // .catch((err) => {
+        //     console.log(err);
+        // })
+        dispatch(login(Email, Password));
+    }
+
+
+
     return (
         <View style={[styles.container, { backgroundColor: darkModeStatus === true ? COLORS.tinBlack : COLORS.white, }]}>
 
-            <ScrollView>
+            <ScrollView keyboardDismissMode='interactive' keyboardShouldPersistTaps="always">
 
                 <Animated.View style={styles.headerContainer}>
                     <Animated.View style={styles.headerView}>
@@ -74,7 +100,7 @@ export default function SignUpScreen({ navigation }) {
                                     placeholderTextColor={COLORS.tinBlack}
                                     renderRightView={
                                         <Animated.View>
-                                            <FontAwesome name="user-o" color={COLORS.tinBlack} size={20} />
+                                            <FontAwesome name="user-o" color={isNameFocused === true ? COLORS.activeBorderColor : COLORS.tinBlack} size={20} />
                                         </Animated.View>
                                     }
                                 />
@@ -92,6 +118,8 @@ export default function SignUpScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    value={Email}
+                                    onChangeText={(value) => setEmail(value)}
                                     onFocus={handleFocusEmail}
                                     onBlur={handleBlurEmail}
                                     customStyleView={{ borderColor: isEmailFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
@@ -99,7 +127,7 @@ export default function SignUpScreen({ navigation }) {
                                     placeholderTextColor={COLORS.tinBlack}
                                     renderRightView={
                                         <Animated.View>
-                                            <MaterialIcons name="alternate-email" color={COLORS.tinBlack} size={20} />
+                                            <MaterialIcons name="alternate-email" color={isEmailFocused === true ? COLORS.activeBorderColor : COLORS.tinBlack} size={20} />
                                         </Animated.View>
                                     }
                                 />
@@ -116,6 +144,8 @@ export default function SignUpScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    value={Password}
+                                    onChangeText={(value) => setPassword(value)}
                                     onFocus={handleFocusPassword}
                                     onBlur={handleBlurPassword}
                                     customStyleView={{ borderColor: isPasswordFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
@@ -128,9 +158,9 @@ export default function SignUpScreen({ navigation }) {
                                             setshowPassword(!showPassword)
                                         }}>
                                             {showPassword ? (
-                                                <Ionicons name="eye-off-outline" color={COLORS.tinBlack} size={20} />
+                                                <Ionicons name="eye-off-outline" color={isPasswordFocused === true ? COLORS.activeBorderColor : COLORS.tinBlack} size={20} />
                                             ) : (
-                                                <Ionicons name="eye-outline" color={COLORS.tinBlack} size={20} />
+                                                <Ionicons name="eye-outline" color={isPasswordFocused === true ? COLORS.activeBorderColor : COLORS.tinBlack} size={20} />
                                             )
                                             }
 
@@ -142,41 +172,19 @@ export default function SignUpScreen({ navigation }) {
                     </Animated.View>
                 </KeyboardAvoidingView>
 
+
                 <OrView />
 
                 <SocialButtons />
 
                 <View style={styles.AuthButtonView}>
-                    <AuthButton lable={"Create an account"} />
+                    <AuthButton lable={"Create an account"} onPress={handleSignup} />
                 </View>
 
                 <View style={styles.haveAnAccountView}>
                     <Text style={styles.haveAnAccountText}>Already have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Auth', { screen: 'SignIn' })}><Text style={[styles.haveAnAccountText, { color: COLORS.twitter }]}> Sign in</Text></TouchableOpacity>
                 </View>
-
-                {/* <View style={styles.ButtonView}>
-                <CheckBox
-                    contentContainerStyle={{
-                        marginTop: SIZES.radius,
-                    }}
-                    isSelected={tearmsCheck}
-                    onPress={() => settearmsCheck(!tearmsCheck)}
-                />
-                <SubmitButton
-                    title={tearmsCheck == false ? "Click On Check Box" : "Sign In"}
-                    onPress={() => console.log("HELO")}
-                    disabled={tearmsCheck === false ? true : false}
-                    CustomButtonStyle={{
-                        backgroundColor: tearmsCheck == false ? 'transparent' : COLORS.white,
-                        borderWidth: tearmsCheck == false ? 1 : 0,
-                        borderColor: tearmsCheck == false ? COLORS.white : null
-                    }}
-                    CustomButtonTextStyle={{
-                        color: tearmsCheck == false ? COLORS.white : COLORS.black
-                    }}
-                />
-            </View> */}
 
             </ScrollView>
 

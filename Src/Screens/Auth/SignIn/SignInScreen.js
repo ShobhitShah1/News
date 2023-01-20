@@ -94,7 +94,7 @@ export default function SignInScreen({ navigation }) {
                             <Animated.View style={[styles.inputheaderView, { flexDirection: 'row', justifyContent: 'space-between' }]}>
                                 <Animated.Text style={styles.inputheaderText}>Password</Animated.Text>
                                 <TouchableOpacity>
-                                <Animated.Text style={styles.ForgotText}>Forgot password?</Animated.Text>
+                                    <Animated.Text style={styles.ForgotText}>Forgot password?</Animated.Text>
                                 </TouchableOpacity>
                             </Animated.View>
 
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         fontFamily: FAMILY.PoppinsRegular,
         fontSize: 15
     },
-    ForgotText:{
+    ForgotText: {
         color: COLORS.tinBlack,
         fontFamily: FAMILY.PoppinsRegular,
         fontSize: 15,
