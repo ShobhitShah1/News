@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Modal, } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -10,33 +10,98 @@ import Images from '../../../Common/Images';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import AuthButton from '../../../Common/AuthComponents/AuthButton';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { login, loginError } from '../../../Redux/Actions/AuthAction';
+import auth from '@react-native-firebase/auth'
+import { useNavigation } from '@react-navigation/native';
+import useToast from '../../../Common/CustomToast';
+import Toast from '../../../Helpers/Toast';
+import { toast } from '@backpackapp-io/react-native-toast';
+import { MotiText, MotiView } from 'moti';
+import { BlurView } from '@react-native-community/blur';
+
 
 const { width, height } = Dimensions.get('window')
 
-export default function SignInScreen({ navigation }) {
+function SignInScreen(props) {
 
+    const SignupRes = useSelector((value) => value.auth);
+    const { data } = props
+    const navigation = useNavigation();
+
+    const { message, animatedStyles, show, hide } = useToast();
 
     const [darkModeStatus, setdarkModeStatus] = React.useState(false);
     const [Email, setEmail] = React.useState(null);
+    const [Password, setPassword] = React.useState(null);
     const [showPassword, setshowPassword] = React.useState(true);
+    const [isLoading, setisLoading] = React.useState(false);
+    const [visible, setvisible] = React.useState(false);
 
-    const [isNameFocused, setisNameFocused] = React.useState(false)
-    const [isEmailFocused, setisEmailFocused] = React.useState(false)
-    const [isPasswordFocused, setisPasswordFocused] = React.useState(false)
+    const [isNameFocused, setisNameFocused] = React.useState(false);
+    const [isEmailFocused, setisEmailFocused] = React.useState(false);
+    const [isPasswordFocused, setisPasswordFocused] = React.useState(false);
 
     const [tearmsCheck, settearmsCheck] = React.useState(false);
     const [HeaderMeme, setHeaderMeme] = React.useState(false);
     const [UserData, setUserData] = React.useState(null);
 
+    const handleFocusEmail = () => setisEmailFocused(true);
+    const handleBlurEmail = () => setisEmailFocused(false);
 
-    const handleFocusName = () => setisNameFocused(true)
-    const handleBlurName = () => setisNameFocused(false)
+    const handleFocusPassword = () => setisPasswordFocused(true);
+    const handleBlurPassword = () => setisPasswordFocused(false);
 
-    const handleFocusEmail = () => setisEmailFocused(true)
-    const handleBlurEmail = () => setisEmailFocused(false)
 
-    const handleFocusPassword = () => setisPasswordFocused(true)
-    const handleBlurPassword = () => setisPasswordFocused(false)
+    const dispatch = useDispatch();
+
+    const Validation = () => {
+        if (Email == null) {
+            alert("Helo")
+        }
+        if (Password == '') {
+            alert("Helo")
+        }
+    }
+
+    const handleSignIn = () => {
+        setisLoading(true)
+        auth()
+            .signInWithEmailAndPassword(Email, Password)
+            .then((res) => {
+                setisLoading(false)
+                navigation.navigate('Home', { screen: 'HomeScreen' })
+
+
+            })
+            .catch((err) => {
+                setisLoading(false)
+                Alert.alert("Error", JSON.stringify(err))
+            })
+    }
+
+    // const handleSignIn = () => {
+    //     dispatch(login(Email, Password))
+    //     if (data.error == null) {
+    //         Alert.alert("Shobhit",)
+    //     } else {
+    //         console.log("SignupRes", SignupRes.error);
+    //     }
+    // }
+
+    const renderModal = () => {
+        return (
+            <Modal visible={visible}>
+                <BlurView blurAmount={10} style={{ flex: 1, justifyContent: 'center' }}>
+                    <MotiView style={{ justifyContent: 'center', alignSelf: 'center', width: 250, height: 250, }}>
+                        <TouchableOpacity onPress={() => setvisible(false)}>
+                            <Text style={{ ...FONTS.h2, textAlign: 'center' }}>Helcdscdscslo</Text>
+                        </TouchableOpacity>
+                    </MotiView>
+                </BlurView>
+            </Modal>
+        )
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: darkModeStatus === true ? COLORS.tinBlack : COLORS.white, }]}>
@@ -73,6 +138,8 @@ export default function SignInScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    value={Email}
+                                    onChangeText={(value) => setEmail(value)}
                                     onFocus={handleFocusEmail}
                                     onBlur={handleBlurEmail}
                                     customStyleView={{ borderColor: isEmailFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
@@ -100,9 +167,11 @@ export default function SignInScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    value={Password}
+                                    onChangeText={(value) => setPassword(value)}
                                     onFocus={handleFocusPassword}
                                     onBlur={handleBlurPassword}
-                                    customStyleView={{ borderColor: isPasswordFocused === true ? COLORS.activeBorderColor : COLORS.textInputBorder }}
+                                    customStyleView={{ borderColor: isPasswordFocused === true ? COLORS.activeBorderColor : data.error !== null ? COLORS.red : COLORS.textInputBorder }}
                                     secureTextEntry={showPassword}
                                     checkPassword={true}
                                     placeholder={"Enter your password"}
@@ -132,7 +201,9 @@ export default function SignInScreen({ navigation }) {
 
                 <View style={styles.BottomView}>
                     <View style={styles.AuthButtonView}>
-                        <AuthButton lable={"Log in"} />
+                        <AuthButton lable={props.data.isLoading === true ? "Loading..." : "Log in"} onPress={() => {
+                            setvisible(true)
+                        }} isLoading={isLoading} />
                     </View>
 
                     <View style={styles.haveAnAccountView}>
@@ -141,33 +212,25 @@ export default function SignInScreen({ navigation }) {
                     </View>
                 </View>
 
-                {/* <View style={styles.ButtonView}>
-                <CheckBox
-                    contentContainerStyle={{
-                        marginTop: SIZES.radius,
-                    }}
-                    isSelected={tearmsCheck}
-                    onPress={() => settearmsCheck(!tearmsCheck)}
-                />
-                <SubmitButton
-                    title={tearmsCheck == false ? "Click On Check Box" : "Sign In"}
-                    onPress={() => console.log("HELO")}
-                    disabled={tearmsCheck === false ? true : false}
-                    CustomButtonStyle={{
-                        backgroundColor: tearmsCheck == false ? 'transparent' : COLORS.white,
-                        borderWidth: tearmsCheck == false ? 1 : 0,
-                        borderColor: tearmsCheck == false ? COLORS.white : null
-                    }}
-                    CustomButtonTextStyle={{
-                        color: tearmsCheck == false ? COLORS.white : COLORS.black
-                    }}
-                />
-            </View> */}
-
             </ScrollView>
+            {renderModal()}
         </View>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+        data: state.auth
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateData: (data) => dispatch(updateData(data))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);
 
 const styles = StyleSheet.create({
     ButtonView: {
