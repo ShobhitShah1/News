@@ -123,12 +123,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: normalize(250),
         height: normalize(250),
-        margin: normalize(30)
+        margin: normalize(10)
     },
     text: {
         justifyContent: 'center',
         alignContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        height: normalize(120)
     },
     headerText: {
         // height: normalize(50),

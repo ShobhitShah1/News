@@ -16,13 +16,13 @@ export const loginError = error => ({
     payload: { error },
 });
 
-export const login = (email, password) => async (dispatch) => { 
-    try { 
+export const login = (email, password) => async (dispatch) => {
+    try {
         dispatch(requestLogin());
         const user = await auth().signInWithEmailAndPassword(email, password);
         dispatch(receiveLogin(user));
     } catch (error) {
-        console.log("passwordcdcd",error);
+        console.log("passwordcdcd", error);
         dispatch(loginError(error));
     }
 };

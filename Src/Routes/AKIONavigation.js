@@ -1,18 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
-
-// Global Component
-import { normalize } from '../Common/GlobalSize'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import { StyleSheet } from 'react-native'
+ 
 
 // Screens
-import SplashScreen from '../Screens/Splash/SplashScreen';
+import AuthHome from '../Screens/Auth/Authhome/AuthHome'
 import SignInScreen from '../Screens/Auth/SignIn/SignInScreen'
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen'
-import AuthHome from '../Screens/Auth/Authhome/AuthHome'
+import HomeScreen from '../Screens/Home/HomeScreen'
+import Index from '../Screens/Notifications/Index'
+import SplashScreen from '../Screens/Splash/SplashScreen'
 
 export default function AKIONavigation() {
+
+    const Stack = createNativeStackNavigator();
 
     const AuthStack = () => {
         return (
@@ -24,19 +26,30 @@ export default function AKIONavigation() {
                 <Stack.Screen name='SignUp' component={SignUpScreen} />
             </Stack.Navigator>
         )
-    } 
+    }
 
-    const Stack = createNativeStackNavigator();
-
-    return (
-        <NavigationContainer>
+    const HomeStack = () => {
+        return (
             <Stack.Navigator screenOptions={{
                 headerShown: false
             }}>
-                <Stack.Screen name='Splash' component={SplashScreen} />
-                <Stack.Screen name='Auth' component={AuthStack} />
+                <Stack.Screen name='HomeScreen' component={HomeScreen} />
             </Stack.Navigator>
-        </NavigationContainer>
+        )
+    }
+
+    return (
+        <>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }}>
+                    <Stack.Screen name='Splash' component={SplashScreen} />
+                    <Stack.Screen name='Auth' component={AuthStack} />
+                    <Stack.Screen name='Home' component={HomeStack} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </>
     )
 }
 

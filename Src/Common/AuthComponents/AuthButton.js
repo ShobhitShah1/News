@@ -1,18 +1,28 @@
-import { StyleSheet, Animated, TouchableOpacity } from 'react-native'
+import { StyleSheet, Animated, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { COLORS, DimensionsSize, FONTS, SIZES } from '../Global'
 import AntDesign from 'react-native-vector-icons/AntDesign' //Google witter
 
 const AuthButton = ({
     lable,
-    onPress
+    onPress,
+    isLoading
 }) => {
     return (
         <TouchableOpacity style={styles.button} onPress={onPress} activeOpacity={0.7}>
-            <Animated.View style={styles.flex}>
-                <Animated.Text style={styles.lable}>{lable}</Animated.Text>
-                <AntDesign name='arrowright' color={COLORS.white} size={18} style={styles.icon} />
-            </Animated.View>
+            {
+                isLoading ? (
+                    <Animated.View style={styles.LoadingView}>
+                        <ActivityIndicator size={'large'} color={COLORS.white} />
+                    </Animated.View>
+                ) : (
+                    <Animated.View style={styles.flex}>
+                        <Animated.Text style={styles.lable}>{lable}</Animated.Text>
+                        <AntDesign name='arrowright' color={COLORS.white} size={18} style={styles.icon} />
+                    </Animated.View>
+                )
+
+            }
         </TouchableOpacity>
     )
 }
@@ -46,5 +56,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignContent: 'center',
         marginLeft: 10
+    },
+    LoadingView: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        alignContent: 'center'
     }
 })

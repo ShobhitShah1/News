@@ -1,18 +1,17 @@
 import React from 'react';
 import { Animated, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch } from 'react-redux';
+import AuthButton from '../../../Common/AuthComponents/AuthButton';
+import OrView from '../../../Common/AuthComponents/OrView';
+import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import CommonTextInput from '../../../Common/CommonTextInput';
 import { COLORS, FAMILY, FONTS, SIZES } from '../../../Common/Global';
 import { normalize } from '../../../Common/GlobalSize';
 import Images from '../../../Common/Images';
-import OrView from '../../../Common/AuthComponents/OrView';
-import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
-import AuthButton from '../../../Common/AuthComponents/AuthButton';
-import { useDispatch } from 'react-redux';
 import { login } from '../../../Redux/Actions/AuthAction';
-import auth from '@react-native-firebase/auth'
 
 const { width, height } = Dimensions.get('window')
 
@@ -48,20 +47,8 @@ export default function SignUpScreen({ navigation }) {
     const dispatch = useDispatch();
 
     const handleSignup = () => {
-        // auth()
-        // .createUserWithEmailAndPassword(Email, Password)
-
-        // .then((res) => {
-        //     console.log(res);
-        // })
-
-        // .catch((err) => {
-        //     console.log(err);
-        // })
         dispatch(login(Email, Password));
     }
-
-
 
     return (
         <View style={[styles.container, { backgroundColor: darkModeStatus === true ? COLORS.tinBlack : COLORS.white, }]}>

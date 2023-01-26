@@ -7,6 +7,7 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+   
     switch (action.type) {
         case LOGIN_REQUEST:
             return {
@@ -18,13 +19,13 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                user: action.user,
+                user: action.payload.user,
             };
         case LOGIN_FAILURE:
             return {
                 ...state,
                 isLoading: false,
-                error: action.error,
+                error: action.payload.error,
             };
         default:
             return state;

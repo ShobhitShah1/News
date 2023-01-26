@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
         fontSize: 17
     },
     textInputView: {
-        width: '85%',
-        marginLeft: '5%',
+        width: '87%',
+        marginLeft: '3%',
         justifyContent: 'center',
         alignContent: 'center'
     },
