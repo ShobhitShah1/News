@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS } from "../Actions/AuthAction";
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_USER, LOGOUT_USER } from "../Actions/AuthAction";
 
 const initialState = {
     isLoading: false,
@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-   
+
     switch (action.type) {
         case LOGIN_REQUEST:
             return {
@@ -27,6 +27,16 @@ export default (state = initialState, action) => {
                 isLoading: false,
                 error: action.payload.error,
             };
+        case LOGIN_USER:
+            return {
+                ...state,
+                user: action.user,
+            };
+        case LOGOUT_USER:
+            return {
+                ...state,
+                user: null
+            }
         default:
             return state;
     }

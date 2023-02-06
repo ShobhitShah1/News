@@ -2,55 +2,68 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
-import { name as appName } from './app.json';
-import AKIONavigation from './Src/Routes/AKIONavigation';
 import React from 'react';
+import { AppRegistry } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
+import { name as appName } from './app.json';
+import ToastStyle from './Src/Common/ToastStyle';
+import Bottomsheet from './Src/Components/Test/Bottomsheet';
 import { store } from './Src/Redux/Store/Store';
-import PushNotification, { Importance } from 'react-native-push-notification';
-import Index from './Src/Screens/Notifications/Index';
+import AKIONavigation from './Src/Routes/AKIONavigation';
 
-PushNotification.createChannel(
-    {
-        channelId: "AKIOMAIN", // (required)
-        channelName: "AkioLocal", // (required)
-        channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
-        playSound: true, // (optional) default: true
-        // soundName: "C:\Users\shobh\Documents\Projects\AKIO\android\app\src\main\res\raw\noti.mp3", // (optional) See `soundName` parameter of `localNotification` function
-        importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-        vibrate: true, // (optional) default: true. Creates the default vibration pattern if true.
-    },
-    (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-);
+// PushNotification.createChannel(
+//     {
+//         channelId: "AKIOMAIN",
+//         channelName: "AkioLocal",
+//         channelDescription: "A channel to categorise your notifications",
+//         playSound: true,
+//         importance: Importance.HIGH,
+//         vibrate: true,
+//     },
+// );
 
-PushNotification.createChannel(
-    {
-        channelId: 'promotions',
-        channelName: 'Promotions',
-        channelDescription: 'Notifications for promotional offers',
-        soundName: 'default',
-        importance: 4
-    },
-    (created) => console.log('Channel created', created)
-);
+// PushNotification.createChannel(
+//     {
+//         channelId: 'promotions',
+//         channelName: 'Promotions',
+//         channelDescription: 'Notifications for promotional offers',
+//         soundName: 'default',
+//         importance: 4
+//     },
+// );
 
-PushNotification.createChannel(
-    {
-        channelId: 'news',
-        channelName: 'News',
-        channelDescription: 'Notifications for latest news',
-        soundName: 'default',
-        importance: 4
-    },
-    (created) => console.log('Channel created', created)
-);
+// PushNotification.createChannel(
+//     {
+//         channelId: 'news',
+//         channelName: 'News',
+//         channelDescription: 'Notifications for latest news',
+//         soundName: 'default',
+//         importance: 4
+//     },
+// );
 
 const App = () => {
     return (
+        <GestureHandlerRootView style={{flex: 1}}>
         <Provider store={store} >
-            <AKIONavigation />
+            <ToastProvider
+                placement="bottom"
+                duration={4000}
+                offset={30}
+                animationType="zoom-in"
+                renderType={{
+                    custom_toast: (toast) => (
+                        console.log(toast),
+                        <ToastStyle title={toast.title} message={toast.message} status={toast.status} />
+                    ),
+                }}
+            >
+                <AKIONavigation />
+            </ToastProvider>
         </Provider>
+        </GestureHandlerRootView>
     )
 }
 

@@ -1,35 +1,30 @@
+import { BlurView } from '@react-native-community/blur';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
+import { MotiView } from 'moti';
 import React from 'react';
-import { Alert, Animated, Dimensions, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Modal, } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { Animated, Dimensions, Keyboard, KeyboardAvoidingView, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, Vibration, View } from 'react-native';
+import { useToast } from "react-native-toast-notifications";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { connect, useSelector } from 'react-redux';
+import AuthButton from '../../../Common/AuthComponents/AuthButton';
+import OrView from '../../../Common/AuthComponents/OrView';
+import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import CommonTextInput from '../../../Common/CommonTextInput';
 import { COLORS, FAMILY, FONTS, SIZES } from '../../../Common/Global';
 import { normalize } from '../../../Common/GlobalSize';
 import Images from '../../../Common/Images';
-import OrView from '../../../Common/AuthComponents/OrView';
-import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
-import AuthButton from '../../../Common/AuthComponents/AuthButton';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { login, loginError } from '../../../Redux/Actions/AuthAction';
-import auth from '@react-native-firebase/auth'
-import { useNavigation } from '@react-navigation/native';
-import useToast from '../../../Common/CustomToast';
-import Toast from '../../../Helpers/Toast';
-import { toast } from '@backpackapp-io/react-native-toast';
-import { MotiText, MotiView } from 'moti';
-import { BlurView } from '@react-native-community/blur';
-
 
 const { width, height } = Dimensions.get('window')
 
 function SignInScreen(props) {
 
+    const toast = useToast();
+
     const SignupRes = useSelector((value) => value.auth);
     const { data } = props
     const navigation = useNavigation();
-
-    const { message, animatedStyles, show, hide } = useToast();
 
     const [darkModeStatus, setdarkModeStatus] = React.useState(false);
     const [Email, setEmail] = React.useState(null);
@@ -52,15 +47,24 @@ function SignInScreen(props) {
     const handleFocusPassword = () => setisPasswordFocused(true);
     const handleBlurPassword = () => setisPasswordFocused(false);
 
-
-    const dispatch = useDispatch();
-
     const Validation = () => {
-        if (Email == null) {
-            alert("Helo")
-        }
-        if (Password == '') {
-            alert("Helo")
+        console.log("Validation");
+        if (Email === null) {
+            toast.show("Enter Email", {
+                type: "custom_toast",
+                title: null,
+                status: 'fail'
+            });
+            Vibration.vibrate(50)
+        } else if (Password === null) {
+            toast.show("Enter Password", {
+                type: "custom_toast",
+                title: null,
+                status: 'fail'
+            });
+            Vibration.vibrate(50)
+        } else {
+            handleSignIn()
         }
     }
 
@@ -70,13 +74,26 @@ function SignInScreen(props) {
             .signInWithEmailAndPassword(Email, Password)
             .then((res) => {
                 setisLoading(false)
-                navigation.navigate('Home', { screen: 'HomeScreen' })
-
-
+                console.log(res);
+                toast.show('Login successfully ✨', {
+                    type: "custom_toast",
+                    title: "Woooh! Welcome 🚀",
+                    status: 'success'
+                });
+                Vibration.vibrate(50)
+                setTimeout(() => {
+                    navigation.replace('Home', { screen: 'HomeScreen' })
+                }, 300);
             })
             .catch((err) => {
+                console.log(err);
                 setisLoading(false)
-                Alert.alert("Error", JSON.stringify(err))
+                toast.show(err.message, {
+                    type: "custom_toast",
+                    title: 'Something went wrong',
+                    status: 'fail'
+                });
+                Vibration.vibrate(50)
             })
     }
 
@@ -93,9 +110,9 @@ function SignInScreen(props) {
         return (
             <Modal visible={visible}>
                 <BlurView blurAmount={10} style={{ flex: 1, justifyContent: 'center' }}>
-                    <MotiView style={{ justifyContent: 'center', alignSelf: 'center', width: 250, height: 250, }}>
-                        <TouchableOpacity onPress={() => setvisible(false)}>
-                            <Text style={{ ...FONTS.h2, textAlign: 'center' }}>Helcdscdscslo</Text>
+                    <MotiView style={{ justifyContent: 'center', alignSelf: 'center', borderColor: COLORS.black, borderWidth: 1, width: width - normalize(50), height: height - normalize(50) }}>
+                        <TouchableOpacity onPress={() => setvisible(false)} style={{ width: 250, height: 50, backgroundColor: COLORS.black, justifyContent: 'center', alignSelf: 'center', borderRadius: normalize(10) }}>
+                            <Text style={{ textAlign: 'center', ...FONTS.h2 }}>Close</Text>
                         </TouchableOpacity>
                     </MotiView>
                 </BlurView>
@@ -106,7 +123,7 @@ function SignInScreen(props) {
     return (
         <View style={[styles.container, { backgroundColor: darkModeStatus === true ? COLORS.tinBlack : COLORS.white, }]}>
 
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="handled">
 
                 <Animated.View style={styles.headerContainer}>
                     <Animated.View style={styles.headerView}>
@@ -160,9 +177,9 @@ function SignInScreen(props) {
                         <Animated.View style={styles.stackview}>
                             <Animated.View style={[styles.inputheaderView, { flexDirection: 'row', justifyContent: 'space-between' }]}>
                                 <Animated.Text style={styles.inputheaderText}>Password</Animated.Text>
-                                <TouchableOpacity>
+                                {/* <TouchableOpacity onPress={() => setvisible(true)}>
                                     <Animated.Text style={styles.ForgotText}>Forgot password?</Animated.Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                             </Animated.View>
 
                             <Animated.View style={styles.fillDetailView}>
@@ -201,8 +218,9 @@ function SignInScreen(props) {
 
                 <View style={styles.BottomView}>
                     <View style={styles.AuthButtonView}>
-                        <AuthButton lable={props.data.isLoading === true ? "Loading..." : "Log in"} onPress={() => {
-                            setvisible(true)
+                        <AuthButton lable={"Log in"} onPress={() => {
+                            Keyboard.dismiss()
+                            Validation()
                         }} isLoading={isLoading} />
                     </View>
 
@@ -241,7 +259,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        alignItems: 'center',
+        // alignItems: 'center',
     },
     headerContainer: {
         width: width

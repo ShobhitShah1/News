@@ -1,13 +1,16 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+
+import { Alert, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react-native'
 import React from 'react'
 import PushNotification from 'react-native-push-notification';
 import { COLORS } from '../../Common/Global';
 import { useNavigation } from '@react-navigation/native';
+import Sound from 'react-native-sound';
 
 const Index = () => {
 
     const navigation = useNavigation()
-
+    const [currentSoundIndex, setCurrentSoundIndex] = React.useState(0);
+    const [sounds, setSounds] = React.useState([]);
 
     PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
@@ -94,7 +97,6 @@ const Index = () => {
 
     function newsc() {
         PushNotification.localNotification({
-
             channelId: "news",
             autoCancel: true,
             vibrate: true,
@@ -129,12 +131,40 @@ const Index = () => {
     }, [])
 
 
+    React.useEffect(() => {
+        setSounds([
+            new Sound('../../../Assets/Sound/sound1.mp3', Sound.MAIN_BUNDLE),
+            new Sound('../../../Assets/Sound/sound2.mp3', Sound.MAIN_BUNDLE),
+            new Sound('../../../Assets/Sound/sound3.mp3', Sound.MAIN_BUNDLE),
+        ]);
+    }, []);
+
+    const playSound = (index) => {
+        sounds[index].play(() => {
+            setCurrentSoundIndex(index + 1);
+        });
+    }
+
+    const renderItem = ({ item, index }) => {
+        console.log(item, index);
+        return (
+            <TouchableOpacity style={{  justifyContent: 'center', alignSelf: 'center', margin: 20 }} onPress={() => playSound(index)}>
+                <Text style={{ color: COLORS.black, fontWeight: 'bold', fontSize: 50  }}>{item._filename}</Text>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <View style={{ justifyContent: 'center', alignSelf: 'center', flex: 1 }}>
             <TouchableOpacity onPress={() => snotification()}><Text style={{ fontSize: 20, color: COLORS.black }}>Schedule</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => notification()}><Text style={{ fontSize: 20, color: COLORS.black }}>Akio</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => newsc()}><Text style={{ fontSize: 20, color: COLORS.black }}>News</Text></TouchableOpacity>
             <TouchableOpacity onPress={() => promotions()}><Text style={{ fontSize: 20, color: COLORS.black }}>Promotions</Text></TouchableOpacity>
+            <FlatList
+                data={sounds}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </View>
     )
 }
@@ -142,3 +172,121 @@ const Index = () => {
 export default Index
 
 const styles = StyleSheet.create({})
+
+
+
+// import React, { useEffect, useState } from 'react';
+// import { View, StyleSheet, TouchableOpacity } from 'react-native';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+
+// var Sound = require('react-native-sound');
+
+
+// Sound.setCategory('Playback');
+
+// var audio = new Sound(
+//     'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+//     null,
+//     error => {
+//         if (error) {
+//             console.log('failed to load the sound', error);
+//             return;
+//         }
+//         // if loaded successfully
+//         console.log(
+//             'duration in seconds: ' +
+//             audio.getDuration() +
+//             'number of channels: ' +
+//             audio.getNumberOfChannels(),
+//         );
+//     },
+// );
+// const App = () => {
+//     const [playing, setPlaying] = useState();
+//     useEffect(() => {
+//         audio.setVolume(1);
+//         return () => {
+//             audio.release();
+//         };
+//     }, []);
+//     const playPause = () => {
+//         try {
+//             if (audio.isPlaying()) {
+//                 audio.pause();
+//                 setPlaying(false);
+//             } else {
+//                 setPlaying(true);
+//                 audio.play(success => {
+//                     if (success) {
+//                         setPlaying(false);
+//                         console.log('successfully finished playing');
+//                     } else {
+//                         setPlaying(false);
+//                         console.log('playback failed due to audio decoding errors');
+//                     }
+//                 });
+//             }
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     };
+//     return (
+//         <View style={styles.container}>
+//             <TouchableOpacity style={styles.playBtn} onPress={playPause}>
+//                 <Ionicons
+//                     name={playing ? 'ios-pause-outline' : 'ios-play-outline'}
+//                     size={36}
+//                     color={'#fff'}
+//                 />
+//             </TouchableOpacity>
+//         </View>
+//     );
+// };
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         backgroundColor: '#000',
+//     },
+//     playBtn: {
+//         padding: 20,
+//     },
+// });
+// export default App;
+
+
+ 
+
+// // import { useState } from 'react';
+// // import { View, Text, TouchableOpacity } from 'react-native';
+// // import Sound from 'react-native-sound';
+
+// // const MyComponent = () => {
+// //   const [playbackStatus, setPlaybackStatus] = useState('paused');
+// //   const [sound, setSound] = useState(null);
+
+// //   useEffect(() => {
+// //     setSound(new Sound('https://my-api.com/sounds/1.mp3', Sound.MAIN_BUNDLE));
+// //   }, []);
+
+// //   const togglePlayback = () => {
+// //     if (playbackStatus === 'paused') {
+// //       sound.play();
+// //       setPlaybackStatus('playing');
+// //     } else {
+// //       sound.pause();
+// //       setPlaybackStatus('paused');
+// //     }
+// //   };
+
+// //   return (
+// //     <View>
+// //       <TouchableOpacity onPress={togglePlayback}>
+// //         <Text>{playbackStatus === 'paused' ? 'Play' : 'Pause'}</Text>
+// //       </TouchableOpacity>
+// //     </View>
+// //   );
+// // }
+
+// // export default MyComponent;

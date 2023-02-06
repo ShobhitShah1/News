@@ -22,7 +22,11 @@ export const COLORS = {
     red: "#F9A8BA",
     gray: "#6A6A6A",
     lightGray: "#dbdbdb",
-    lightGray1: "#f5f6fa"
+    lightGray1: "#f5f6fa",
+    yellow: "#FFFF00",
+    orange: "#FF9900",
+    red: "#FF0000",
+    green: "#00FF00"
 };
 export const SIZES = {
     // global sizes
@@ -47,15 +51,15 @@ export const SIZES = {
     height
 };
 export const FONTS = {
-    h1: { fontFamily: "Poppins-Bold", fontSize: SIZES.h1, lineHeight: 36 },
-    h2: { fontFamily: "Poppins-Bold", fontSize: SIZES.h2, lineHeight: 30 },
-    h3: { fontFamily: "Poppins-Bold", fontSize: SIZES.h3, lineHeight: 22 },
-    h4: { fontFamily: "Poppins-Bold", fontSize: SIZES.h4, lineHeight: 22 },
-    body1: { fontFamily: "Poppins-Regular", fontSize: SIZES.body1, lineHeight: 36 },
-    body2: { fontFamily: "Poppins-Regular", fontSize: SIZES.body2, lineHeight: 30 },
-    body3: { fontFamily: "Poppins-Regular", fontSize: SIZES.body3, lineHeight: 22 },
-    body4: { fontFamily: "Poppins-Regular", fontSize: SIZES.body4, lineHeight: 22 },
-    body5: { fontFamily: "Poppins-Regular", fontSize: SIZES.body5, lineHeight: 22 },
+    h1: { fontFamily: "Poppins-Bold", fontSize: SIZES.h1, lineHeight: 36, color: COLORS.black },
+    h2: { fontFamily: "Poppins-Bold", fontSize: SIZES.h2, lineHeight: 30, color: COLORS.black },
+    h3: { fontFamily: "Poppins-Bold", fontSize: SIZES.h3, lineHeight: 22, color: COLORS.black },
+    h4: { fontFamily: "Poppins-Bold", fontSize: SIZES.h4, lineHeight: 22, color: COLORS.black },
+    body1: { fontFamily: "Poppins-Regular", fontSize: SIZES.body1, lineHeight: 36, color: COLORS.black },
+    body2: { fontFamily: "Poppins-Regular", fontSize: SIZES.body2, lineHeight: 30, color: COLORS.black },
+    body3: { fontFamily: "Poppins-Regular", fontSize: SIZES.body3, lineHeight: 22, color: COLORS.black },
+    body4: { fontFamily: "Poppins-Regular", fontSize: SIZES.body4, lineHeight: 22, color: COLORS.black },
+    body5: { fontFamily: "Poppins-Regular", fontSize: SIZES.body5, lineHeight: 22, color: COLORS.black },
 };
 
 export const FAMILY = {
