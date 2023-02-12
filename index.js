@@ -9,9 +9,11 @@ import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import { name as appName } from './app.json';
 import ToastStyle from './Src/Common/ToastStyle';
-import Bottomsheet from './Src/Components/Test/Bottomsheet';
 import { store } from './Src/Redux/Store/Store';
 import AKIONavigation from './Src/Routes/AKIONavigation';
+import AuthHome from './Src/Screens/Auth/Authhome/AuthHome';
+import SignInScreen from './Src/Screens/Auth/SignIn/SignInScreen';
+import SplashScreen from './Src/Screens/Splash/SplashScreen';
 
 // PushNotification.createChannel(
 //     {
@@ -45,26 +47,25 @@ import AKIONavigation from './Src/Routes/AKIONavigation';
 // );
 
 const App = () => {
-    return (
-        <GestureHandlerRootView style={{flex: 1}}>
-        <Provider store={store} >
-            <ToastProvider
-                placement="bottom"
-                duration={4000}
-                offset={30}
-                animationType="zoom-in"
-                renderType={{
-                    custom_toast: (toast) => (
-                        console.log(toast),
-                        <ToastStyle title={toast.title} message={toast.message} status={toast.status} />
-                    ),
-                }}
-            >
-                <AKIONavigation />
-            </ToastProvider>
-        </Provider>
-        </GestureHandlerRootView>
-    )
+  return (
+    <GestureHandlerRootView style={{flex: 1}} >
+    <Provider store={store}>
+      <ToastProvider
+        placement="bottom"
+        duration={4000}
+        offset={30}
+        animationType="zoom-in"
+        renderType={{
+          custom_toast: (toast) => (
+            <ToastStyle title={toast.title} message={toast.message} status={toast.status} />
+          ),
+        }}
+      >
+        <AKIONavigation />
+      </ToastProvider>
+    </Provider>
+    </GestureHandlerRootView>
+  )
 }
 
 AppRegistry.registerComponent(appName, () => App);

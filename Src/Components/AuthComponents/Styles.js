@@ -39,7 +39,10 @@ const styles = StyleSheet.create({
         ...FONTS.h2, textAlign: 'center'
     },
     PasswordInfoViewContainer: {
-
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignSelf:'center',
+        marginVertical: normalize(18)
     },
     PasswordInfoPoint:{
         marginHorizontal: normalize(10),
@@ -73,6 +76,9 @@ const styles = StyleSheet.create({
         marginTop: normalize(5),
         color: COLORS.green
     },
+    barstyle:{
+        marginHorizontal: normalize(8)
+    }
 })
 
 export default styles;

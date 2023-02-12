@@ -50,11 +50,11 @@ export default function SignUpScreen({ navigation }) {
     const SheetRef = React.useRef(null);
     const [isOpen, setIsopen] = React.useState(true);
 
-    const snapPoints = ["23%", "33%"];
+    const snapPoints = ["23%"];
 
     const handleFocusName = () => {
-        setisNameFocused(true);
         onClose();
+        setisNameFocused(true);
     }
     const handleBlurName = () => setisNameFocused(false)
 
@@ -126,7 +126,7 @@ export default function SignUpScreen({ navigation }) {
             });
             Vibration.vibrate(50)
             setTimeout(() => {
-                navigation.replace('Home', { screen: 'HomeScreen' });
+                navigation.replace('BottomSheet', { screen: 'HomeScreen' });
             }, 1000);
             return () => cancelIdleCallback()
         } catch (error) {
@@ -148,6 +148,18 @@ export default function SignUpScreen({ navigation }) {
     const onClose = () => {
         SheetRef.current?.close();
         setIsopen(false)
+    }
+
+    const CheckFocusForAll = () => {
+        if (isNameFocused) {
+            return true
+        } else if (isEmailFocused) {
+            return true
+        } else if (isPasswordFocused) {
+            return true
+        } else {
+            return false
+        }
     }
 
     return (
@@ -180,6 +192,7 @@ export default function SignUpScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    onPressIn={() => onClose()}
                                     value={Username}
                                     onChangeText={(value) => setUsername(value)}
                                     onFocus={handleFocusName}
@@ -190,7 +203,6 @@ export default function SignUpScreen({ navigation }) {
                                     renderRightView={
                                         <Animated.View>
                                             <FontAwesome name="user-o" color={COLORS.tinBlack} size={20} />
-                                            {/* <FontAwesome name="user-o" color={isNameFocused === true ? COLORS.activeBorderColor : COLORS.tinBlack} size={20} /> */}
                                         </Animated.View>
                                     }
                                 />
@@ -207,6 +219,7 @@ export default function SignUpScreen({ navigation }) {
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    onPressIn={() => onClose()}
                                     value={Email}
                                     onChangeText={(value) => setEmail(value)}
                                     onFocus={handleFocusEmail}
@@ -229,11 +242,12 @@ export default function SignUpScreen({ navigation }) {
                         <Animated.View style={styles.stackview}>
                             <Animated.View style={styles.inputheaderView}>
                                 <Animated.Text style={styles.inputheaderText}>Password</Animated.Text>
-                                <Entypo onPress={() => hanndleOnOpen()} name='info' color={COLORS.black} size={normalize(12)} style={styles.infoIcon} />
+                                <Entypo onPress={() => CheckFocusForAll() ? null : hanndleOnOpen()} name='info' color={COLORS.black} size={normalize(12)} style={styles.infoIcon} />
                             </Animated.View>
 
                             <Animated.View style={styles.fillDetailView}>
                                 <CommonTextInput
+                                    onPressIn={() => onClose()}
                                     value={Password}
                                     onChangeText={(value) => {
                                         setPassword(value)
@@ -285,7 +299,6 @@ export default function SignUpScreen({ navigation }) {
             {/* Bottom Sheet */}
             <BottomSheetModalProvider>
                 <BottomSheetModal
-                    style={{backgroundColor: COLORS.primary}}
                     ref={SheetRef}
                     index={0}
                     snapPoints={snapPoints}

@@ -34,6 +34,7 @@ export const SIZES = {
     font: 14,
     radius: 12,
     padding: 24,
+    bottombaricon: 25,
 
     // font sizes
     h1: 30,

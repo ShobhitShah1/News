@@ -7,7 +7,7 @@ import { Animated, Dimensions, Keyboard, KeyboardAvoidingView, Modal, ScrollView
 import { useToast } from "react-native-toast-notifications";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import AuthButton from '../../../Common/AuthComponents/AuthButton';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
@@ -21,8 +21,7 @@ const { width, height } = Dimensions.get('window')
 function SignInScreen(props) {
 
     const toast = useToast();
-
-    const SignupRes = useSelector((value) => value.auth);
+ 
     const { data } = props
     const navigation = useNavigation();
 
@@ -36,11 +35,7 @@ function SignInScreen(props) {
     const [isNameFocused, setisNameFocused] = React.useState(false);
     const [isEmailFocused, setisEmailFocused] = React.useState(false);
     const [isPasswordFocused, setisPasswordFocused] = React.useState(false);
-
-    const [tearmsCheck, settearmsCheck] = React.useState(false);
-    const [HeaderMeme, setHeaderMeme] = React.useState(false);
-    const [UserData, setUserData] = React.useState(null);
-
+  
     const handleFocusEmail = () => setisEmailFocused(true);
     const handleBlurEmail = () => setisEmailFocused(false);
 
@@ -96,15 +91,6 @@ function SignInScreen(props) {
                 Vibration.vibrate(50)
             })
     }
-
-    // const handleSignIn = () => {
-    //     dispatch(login(Email, Password))
-    //     if (data.error == null) {
-    //         Alert.alert("Shobhit",)
-    //     } else {
-    //         console.log("SignupRes", SignupRes.error);
-    //     }
-    // }
 
     const renderModal = () => {
         return (
@@ -259,7 +245,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        // alignItems: 'center',
+        alignItems: 'center',
     },
     headerContainer: {
         width: width

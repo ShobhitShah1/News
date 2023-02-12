@@ -232,6 +232,7 @@ android {
             keyPassword 'android'
         }
     }
+    namespace 'com.akio'
     buildTypes {
         debug {
             signingConfig signingConfigs.debug

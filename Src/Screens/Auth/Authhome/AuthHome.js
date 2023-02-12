@@ -13,7 +13,6 @@ const { width } = Dimensions.get('window')
 export default function AuthHome() {
 
     const [currentIndex, setcurrentIndex] = React.useState(0);
-    const [darkModeStatus, setdarkModeStatus] = React.useState(0);
     const navigation = useNavigation();
 
     const scrollX = React.useRef(new Animated.Value(0)).current;

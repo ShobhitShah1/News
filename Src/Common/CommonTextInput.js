@@ -14,12 +14,14 @@ const CommonTextInput = ({
     secureTextEntry,
     customStyleView,
     onFocus,
-    onBlur
+    onBlur,
+    onPressIn
 }) => {
     return (
         <Animated.View style={[styles.View, {...customStyleView}]}>
             <Animated.View style={[styles.textInputView]}>
                 <TextInput
+                onPressIn={onPressIn}
                     onFocus={onFocus}
                     onBlur={onBlur}
                     style={styles.Textinput}

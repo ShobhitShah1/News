@@ -1,18 +1,13 @@
-import auth from '@react-native-firebase/auth';
 import React, { useEffect, useRef } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../Common/Global';
 import { normalize } from '../../Common/GlobalSize';
 import Images from '../../Common/Images';
-import { login, setUser } from '../../Redux/Actions/AuthAction';
-
+import auth from '@react-native-firebase/auth'
 const { width, height } = Dimensions.get('window');
 
 export default function SplashScreen({ navigation }) {
 
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.auth.user);
     const isMounted = useRef(false);
 
     useEffect(() => {
@@ -27,7 +22,7 @@ export default function SplashScreen({ navigation }) {
             if (isMounted.current) {
                 if (user) {
                     console.log("Hy");
-                    navigation.replace('Home', { screen: 'HomeScreen' });
+                    navigation.replace('BottomSheet', { screen: 'HomeScreen' });
                 } else {
                     console.log('Else');
                     navigation.replace('Auth', { screen: 'AuthHome' });
