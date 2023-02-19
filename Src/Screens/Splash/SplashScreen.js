@@ -21,10 +21,8 @@ export default function SplashScreen({ navigation }) {
         auth().onAuthStateChanged(user => {
             if (isMounted.current) {
                 if (user) {
-                    console.log("Hy");
                     navigation.replace('BottomSheet', { screen: 'HomeScreen' });
                 } else {
-                    console.log('Else');
                     navigation.replace('Auth', { screen: 'AuthHome' });
                 }
             }

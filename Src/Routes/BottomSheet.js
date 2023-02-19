@@ -1,36 +1,55 @@
-import { View, Text, Image } from 'react-native'
-import React from 'react'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import HomeScreen from '../Screens/Home/HomeScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React from 'react';
 import { normalize } from '../Common/GlobalSize';
-import Images from '../Common/Images';
-import Icons from '../Common/Icons';
-import { COLORS, SIZES } from '../Common/Global';
+import BottomChat from '../Components/BottomTab/BottomChat';
+import BottomHome from '../Components/BottomTab/BottomHome';
+import BottomProfile from '../Components/BottomTab/BottomProfile';
+import ChatScreen from '../Screens/Chat/ChatScreen';
+import HomeScreen from '../Screens/Home/HomeScreen';
+import ProfileScreen from '../Screens/Profile/ProfileScreen';
 
 export default function BottomSheet() {
+  const Bottom = createBottomTabNavigator();
 
-    const Bottom = createBottomTabNavigator();
-
-    return (
-        <Bottom.Navigator
-            screenOptions={{
-
-            }}
-        >
-            <Bottom.Screen name='HomeScreen' component={HomeScreen} options={{
-                tabBarIcon: ({ focused }) => {
-                    return (
-                        <View>
-                            <Image source={Icons.HomeBlack} style={{ width: SIZES.bottombaricon, height: SIZES.bottombaricon, justifyContent: 'center', alignSelf: 'center' }} />
-                        </View>
-                    )
-                },
-                tabBarShowLabel: false,
-            }} />
-            <Bottom.Screen name='HomeScreen1' component={HomeScreen} />
-            <Bottom.Screen name='HomeScreen2' component={HomeScreen} />
-            <Bottom.Screen name='HomeScreen3' component={HomeScreen} />
-            <Bottom.Screen name='HomeScreen4' component={HomeScreen} />
-        </Bottom.Navigator>
-    )
+  return (
+    <Bottom.Navigator
+      initialRouteName="HomeScreen"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          height: normalize(50),
+        },
+      }}>
+      <Bottom.Screen
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <BottomChat focused={focused} />;
+          },
+          tabBarShowLabel: false,
+        }}
+      />
+      <Bottom.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <BottomHome focused={focused} />;
+          },
+          tabBarShowLabel: false,
+        }}
+      />
+      <Bottom.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({focused}) => {
+            return <BottomProfile focused={focused} />;
+          },
+          tabBarShowLabel: false,
+        }}
+      />
+    </Bottom.Navigator>
+  );
 }

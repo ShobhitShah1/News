@@ -77,7 +77,7 @@ function SignInScreen(props) {
                 });
                 Vibration.vibrate(50)
                 setTimeout(() => {
-                    navigation.replace('Home', { screen: 'HomeScreen' })
+                    navigation.replace('BottomSheet', { screen: 'HomeScreen' })
                 }, 300);
             })
             .catch((err) => {

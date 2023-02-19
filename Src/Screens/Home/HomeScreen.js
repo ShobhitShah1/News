@@ -1,14 +1,14 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { COLORS } from '../../Common/Global'
+import React from 'react';
+import {View} from 'react-native';
+import CommonStyles from '../../Common/CommonStyles';
+import HomeHeaderView from '../../Components/HomeScreen/HomeHeaderView';
 
 export default function HomeScreen() {
+  const [Username, setUsername] = React.useState('Shobhit');
 
   return (
-    <View>
-      <Text>HomeScreen</Text>
+    <View style={CommonStyles.container}>
+      <HomeHeaderView username={Username} />
     </View>
-  )
+  );
 }
-
-const styles = StyleSheet.create({})
