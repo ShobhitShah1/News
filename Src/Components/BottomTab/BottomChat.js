@@ -6,11 +6,11 @@ import styles from './styles';
 const BottomChat = ({focused}) => {
   return focused ? (
     <View style={styles.ActiveimageView}>
-      <Image source={Icons.ChatWhite} style={styles.image} />
+      <Image source={Icons.ChatBlack} style={styles.image} />
     </View>
   ) : (
     <View style={styles.InActiveimageView}>
-      <Image source={Icons.ChatGray} style={styles.image} />
+      <Image source={Icons.ChatWhite} style={styles.image} />
     </View>
   );
 };

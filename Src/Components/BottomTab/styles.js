@@ -5,11 +5,14 @@ import {normalize} from '../../Common/GlobalSize';
 const styles = StyleSheet.create({
   ActiveimageView: {
     justifyContent: 'center',
+    // paddingHorizontal: SIZES.size15,
     alignSelf: 'center',
-    width: normalize(50),
+    width: normalize(130),
     height: normalize(40),
     borderRadius: SIZES.radius,
-    backgroundColor: COLORS.black,
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   InActiveimageView: {
     width: normalize(50),

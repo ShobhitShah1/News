@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerContainer: {
-        width: DimensionsSize.width
+        width: DimensionsSize.width 
     },
     darkmodeView: {
         justifyContent: 'flex-end',
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         ...FONTS.h1,
-        color: COLORS.tinBlack
+        color: COLORS.white
     },
     fillDetailView: {
         justifyContent: 'center',
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         marginRight: normalize(5)
     },
     inputheaderText: {
-        color: COLORS.tinBlack,
+        color: COLORS.white,
         fontFamily: FAMILY.PoppinsRegular,
         fontSize: 15
     },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     haveAnAccountText: {
         fontFamily: FAMILY.PoppinsRegular,
-        color: COLORS.tinBlack
+        color: COLORS.white
     },
     progressBarContainer: {
         flexDirection: 'row',

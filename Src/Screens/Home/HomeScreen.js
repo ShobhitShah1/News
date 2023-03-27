@@ -1,14 +1,24 @@
 import React from 'react';
-import {View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import CommonStyles from '../../Common/CommonStyles';
-import HomeHeaderView from '../../Components/HomeScreen/HomeHeaderView';
+import ChatButton from '../../Components/ChatButton';
+import {Logout} from '../../Redux/Actions/AuthAction';
+import styles from './styles';
 
-export default function HomeScreen() {
-  const [Username, setUsername] = React.useState('Shobhit');
+export default function HomeScreen({navigation}) {
+  const UserData = useSelector(state => state.auth.user);
 
   return (
     <View style={CommonStyles.container}>
-      <HomeHeaderView username={Username} />
+      <TouchableOpacity
+        onPress={() => Logout({navigation: navigation})}
+        style={styles.HeaderNameView}>
+        <Text numberOfLines={1} style={styles.headerName}>
+          Hello, {UserData?.username} 👋
+        </Text>
+      </TouchableOpacity>
+      <ChatButton size={60} onPress={() => navigation.navigate('Chat')} />
     </View>
   );
 }

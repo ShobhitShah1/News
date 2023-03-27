@@ -19,9 +19,9 @@ export const COLORS = {
   tinBlack: '#1e1d2e',
   pagginColor: '#505062',
   skipBTN: '#404855',
-  black: '#000000',
+  black: '#1c1c1c',
   green: '#37E39F',
-  red: '#F9A8BA',
+  // red: '#F9A8BA',
   gray: '#6A6A6A',
   lightGray: '#dbdbdb',
   lightGray1: '#f5f6fa',
@@ -29,7 +29,12 @@ export const COLORS = {
   orange: '#FF9900',
   red: '#FF0000',
   green: '#00FF00',
-  NotificationButton: '#3c3b4d'
+  NotificationButton: '#3c3b4d',
+  SearchbarBackground: '#32313f',
+  SearchButton: '#5b5a69',
+  ReminderBackground: '#f8f9fd',
+  InviteButton: '#e8e9fb',
+  taskView: '#f8f9fd',
 };
 export const SIZES = {
   // global sizes
@@ -70,7 +75,6 @@ export const FONTS = {
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.h2,
     lineHeight: 30,
-    color: COLORS.black,
   },
   h3: {
     fontFamily: 'Poppins-Bold',

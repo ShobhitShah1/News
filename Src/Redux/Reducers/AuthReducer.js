@@ -1,43 +1,20 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_USER, LOGOUT_USER } from "../Actions/AuthAction";
+import * as ActionType from '../Actions/ActionType';
 
 const initialState = {
-    isLoading: false,
-    user: null,
-    error: null,
-}
+  isLoading: false,
+  user: null,
+  login_type: null,
+};
 
 export default (state = initialState, action) => {
-
-    switch (action.type) {
-        case LOGIN_REQUEST:
-            return {
-                ...state,
-                isLoading: true,
-                error: null,
-            };
-        case LOGIN_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                user: action.payload.user,
-            };
-        case LOGIN_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: action.payload.error,
-            };
-        case LOGIN_USER:
-            return {
-                ...state,
-                user: action.user,
-            };
-        case LOGOUT_USER:
-            return {
-                ...state,
-                user: null
-            }
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case ActionType.USER_AUTH:
+      return {
+        ...state,
+        user: action.data,
+        login_type: action.login_type,
+      };
+    default:
+      return state;
+  }
 };

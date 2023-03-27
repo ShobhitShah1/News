@@ -1,10 +1,9 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { normalize } from '../Common/GlobalSize';
-import BottomChat from '../Components/BottomTab/BottomChat';
+import {COLORS} from '../Common/Global';
+import {normalize} from '../Common/GlobalSize';
 import BottomHome from '../Components/BottomTab/BottomHome';
 import BottomProfile from '../Components/BottomTab/BottomProfile';
-import ChatScreen from '../Screens/Chat/ChatScreen';
 import HomeScreen from '../Screens/Home/HomeScreen';
 import ProfileScreen from '../Screens/Profile/ProfileScreen';
 
@@ -18,18 +17,11 @@ export default function BottomSheet() {
         headerShown: false,
         tabBarStyle: {
           height: normalize(50),
+          backgroundColor: COLORS.black,
+          borderTopWidth: 0,
         },
-      }}>
-      <Bottom.Screen
-        name="ChatScreen"
-        component={ChatScreen}
-        options={{
-          tabBarIcon: ({focused}) => {
-            return <BottomChat focused={focused} />;
-          },
-          tabBarShowLabel: false,
-        }}
-      />
+      }}
+      backBehavior="initialRoute">
       <Bottom.Screen
         name="HomeScreen"
         component={HomeScreen}
