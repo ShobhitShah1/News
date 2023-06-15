@@ -4,29 +4,23 @@ import {COLORS, FONTS} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import Images from '../../Common/Images';
 import auth from '@react-native-firebase/auth';
+import {useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
 export default function SplashScreen({navigation}) {
-  const isMounted = useRef(false);
+  const Status = useSelector(state => state?.auth?.user);
 
   useEffect(() => {
-    isMounted.current = true;
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    auth().onAuthStateChanged(user => {
-      if (isMounted.current) {
-        if (user) {
-          navigation.replace('BottomSheet', {screen: 'HomeScreen'});
-        } else {
-          navigation.replace('Auth', {screen: 'SignIn'});
-        }
+    const timeout = setTimeout(() => {
+      if (Status !== null && Status !== undefined) {
+        navigation.replace('BottomSheet', {screen: 'HomeScreen'});
+      } else {
+        navigation.replace('Auth', {screen: 'SignIn'});
       }
-    });
-  }, [navigation]);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [Status, navigation]);
 
   return (
     <View style={styles.Container}>

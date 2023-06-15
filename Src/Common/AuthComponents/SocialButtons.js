@@ -5,14 +5,14 @@ import {normalize} from '../GlobalSize';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; //facebook
 import AntDesign from 'react-native-vector-icons/AntDesign'; //Google witter
 
-const SocialButtons = ({onPress}) => {
+const SocialButtons = ({onGooglePress, onFacebookPress}) => {
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={styles.flexView}>
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onPress}>
+          onPress={onGooglePress}>
           <AntDesign
             name="google"
             size={20}
@@ -24,7 +24,7 @@ const SocialButtons = ({onPress}) => {
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onPress}>
+          onPress={onFacebookPress}>
           <FontAwesome
             name="facebook"
             size={20}

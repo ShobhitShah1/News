@@ -1,15 +1,10 @@
-import {BlurView} from '@react-native-community/blur';
-import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
-import {MotiView} from 'moti';
-import React from 'react';
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {
   Animated,
   Dimensions,
   Keyboard,
   KeyboardAvoidingView,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -28,7 +23,8 @@ import CommonTextInput from '../../../Common/CommonTextInput';
 import {COLORS, FAMILY, FONTS, SIZES} from '../../../Common/Global';
 import {normalize} from '../../../Common/GlobalSize';
 import Images from '../../../Common/Images';
-import {Signin} from '../../../Redux/Actions/AuthAction';
+import {GoogleSigninAction, Signin} from '../../../Redux/Actions/AuthAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const {width, height} = Dimensions.get('window');
 
@@ -40,18 +36,21 @@ function SignInScreen() {
   const [Email, setEmail] = React.useState(null);
   const [Password, setPassword] = React.useState(null);
   const [showPassword, setshowPassword] = React.useState(true);
-  const [visible, setvisible] = React.useState(false);
-
   const [isEmailFocused, setisEmailFocused] = React.useState(false);
   const [isPasswordFocused, setisPasswordFocused] = React.useState(false);
 
   const handleFocusEmail = () => setisEmailFocused(true);
   const handleBlurEmail = () => setisEmailFocused(false);
-
   const handleFocusPassword = () => setisPasswordFocused(true);
   const handleBlurPassword = () => setisPasswordFocused(false);
 
   useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '783248165978-s0t5jh52ncpija7mak48p3pfps8ukpcv.apps.googleusercontent.com',
+      offlineAccess: true,
+    });
+
     const Init = navigation.addListener('blur', () => {
       setEmail(null);
       setPassword(null);
@@ -87,35 +86,16 @@ function SignInScreen() {
     Signin({data: data, navigation: navigation, toast: toast});
   };
 
-  const renderModal = () => {
-    return (
-      <Modal visible={visible}>
-        <BlurView blurAmount={10} style={{flex: 1, justifyContent: 'center'}}>
-          <MotiView
-            style={{
-              justifyContent: 'center',
-              alignSelf: 'center',
-              borderColor: COLORS.black,
-              borderWidth: 1,
-              width: width - normalize(50),
-              height: height - normalize(50),
-            }}>
-            <TouchableOpacity
-              onPress={() => setvisible(false)}
-              style={{
-                width: 250,
-                height: 50,
-                backgroundColor: COLORS.black,
-                justifyContent: 'center',
-                alignSelf: 'center',
-                borderRadius: normalize(10),
-              }}>
-              <Text style={{textAlign: 'center', ...FONTS.h2}}>Close</Text>
-            </TouchableOpacity>
-          </MotiView>
-        </BlurView>
-      </Modal>
-    );
+  const handleGoogleSignin = () => {
+    GoogleSignin.signIn().then(res => {
+      const data = {
+        username: res.user.name,
+        email: res.user.email,
+        profile: res.user.photo,
+        token: res.idToken,
+      };
+      GoogleSigninAction({data: data, toast: toast, navigation: navigation});
+    });
   };
 
   return (
@@ -222,7 +202,7 @@ function SignInScreen() {
 
         <OrView />
 
-        <SocialButtons />
+        <SocialButtons onGooglePress={() => handleGoogleSignin()} />
 
         <View style={styles.BottomView}>
           <View style={styles.AuthButtonView}>
@@ -237,18 +217,18 @@ function SignInScreen() {
           </View>
 
           <View style={styles.haveAnAccountView}>
-            <Text style={styles.haveAnAccountText}>Don't have an account?</Text>
+            <Text style={styles.haveAnAccountText}>
+              Don't have an account?{' '}
+            </Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('Auth', {screen: 'SignUp'})}>
               <Text style={[styles.haveAnAccountText, {color: COLORS.white}]}>
-                {' '}
                 Sign up now.
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-      {renderModal()}
     </View>
   );
 }

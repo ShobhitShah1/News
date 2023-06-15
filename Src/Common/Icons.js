@@ -29,7 +29,7 @@ const Backward = require('../../Assets/Icons/backward.png');
 const fullscreen = require('../../Assets/Icons/fullscreen.png');
 
 // Task
-const dots = require('../../Assets/Icons/dots.png')
+const dots = require('../../Assets/Icons/dots.png');
 
 export default {
   CheckMark,
@@ -51,5 +51,5 @@ export default {
   Forward,
   Backward,
   fullscreen,
-  dots
+  dots,
 };

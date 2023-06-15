@@ -1,11 +1,9 @@
-import {MotiProgressBar} from 'moti';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {Text, TextInput, View} from 'react-native';
-import {COLORS, FONTS} from '../../Common/Global';
-import {normalize} from '../../Common/GlobalSize';
-import styles from './Styles';
+import { Text, View } from 'react-native';
 import * as Progress from 'react-native-progress';
-import {useNavigation} from '@react-navigation/native';
+import { COLORS, FONTS } from '../../Common/Global';
+import styles from './Styles';
 
 const PasswordInfo = () => {
   const navigation = useNavigation();

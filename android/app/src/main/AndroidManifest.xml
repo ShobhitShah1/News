@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.akio">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
       android:name=".MainApplication"
@@ -26,8 +25,9 @@
         </intent-filter>
       </activity>
 
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/black"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDY6j_GidvtFGN3X2URmF6ypTk789I6bNQ"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
+        <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/black"/>
 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />

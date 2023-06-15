@@ -80,13 +80,13 @@ export const FONTS = {
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.h3,
     lineHeight: 22,
-    color: COLORS.black,
+    // color: COLORS.black,
   },
   h4: {
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.h4,
     lineHeight: 22,
-    color: COLORS.black,
+    // color: COLORS.black,
   },
   body1: {
     fontFamily: 'Poppins-Regular',
@@ -104,7 +104,7 @@ export const FONTS = {
     fontFamily: 'Poppins-Regular',
     fontSize: SIZES.body3,
     lineHeight: 22,
-    color: COLORS.black,
+    // color: COLORS.black,
   },
   body4: {
     fontFamily: 'Poppins-Regular',

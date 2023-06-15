@@ -1,9 +1,9 @@
 import * as ActionType from '../Actions/ActionType';
 
 const initialState = {
-  isLoading: false,
   user: null,
   login_type: null,
+  hasSeenNavTooltip: true,
 };
 
 export default (state = initialState, action) => {
@@ -13,6 +13,13 @@ export default (state = initialState, action) => {
         ...state,
         user: action.data,
         login_type: action.login_type,
+      };
+    case 'RESET_STATE':
+      return initialState;
+    case ActionType.SET_HAS_SEEN_NAV_TOOLTIP:
+      return {
+        ...state,
+        hasSeenNavTooltip: action.payload.hasSeenNavTooltip,
       };
     default:
       return state;

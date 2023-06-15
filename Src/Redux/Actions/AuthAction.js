@@ -3,6 +3,9 @@ import firestore from '@react-native-firebase/firestore';
 import {Vibration} from 'react-native';
 import * as ActionType from '../Actions/ActionType';
 import {store} from '../Store/Store';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {GoogleAuthProvider} from '@react-native-firebase/auth';
+import {persistor} from '../Store/Store';
 
 const Success = data => {
   data.toast.show('signup successfully ✨', {
@@ -27,13 +30,13 @@ const Errors = data => {
   store.dispatch({type: ActionType.LOADING, Loading: false});
 };
 
-export const Signup = async userData => { 
+export const Signup = async userData => {
   store.dispatch({type: ActionType.LOADING, Loading: true});
   try {
     const userCredential = await auth().createUserWithEmailAndPassword(
       userData.data.Email,
       userData.data.Password,
-    ); 
+    );
     await firestore().collection('users').doc(userCredential.user.uid).set({
       username: userData.data.Username,
       email: userData.data.Email,
@@ -58,6 +61,26 @@ export const Signup = async userData => {
   }
 };
 
+export const GoogleSigninAction = async userData => {
+  store.dispatch({type: ActionType.LOADING, Loading: true});
+  try {
+    store.dispatch({
+      type: ActionType.USER_AUTH,
+      data: userData.data,
+      login_type: 'Google',
+    });
+    // firestore().collection('users').add({
+    //   username: userData.data.Username,
+    //   email: userData.data.Email,
+    //   // password: userData.data.Password,
+    //   profilePic: userData.data.Profile,
+    // });
+    Success({navigation: userData.navigation, toast: userData.toast});
+  } catch (error) {
+    store.dispatch({type: ActionType.LOADING, Loading: false});
+  }
+};
+
 export const Signin = userData => {
   store.dispatch({type: ActionType.LOADING, Loading: true});
   auth()
@@ -77,7 +100,6 @@ export const Signin = userData => {
 
 export const GetAccountDetail = async userData => {
   const User = await auth().currentUser.uid;
- 
   await firestore()
     .collection('users')
     .doc(User)
@@ -104,12 +126,38 @@ export const GetAccountDetail = async userData => {
 };
 
 export const Logout = async userData => {
-  await auth()
-    .signOut()
-    .then(res => {
-      userData.navigation.replace('Auth', {screen: 'SignIn'});
-    })
-    .catch(err => {
-      console.log('Logout Error -->', err);
-    });
+  store.dispatch({type: ActionType.LOADING, Loading: true});
+  if (store.getState().auth.login_type === 'Google') {
+    GoogleSignin.signOut().then(RES => console.log(RES));
+  }
+  store.dispatch({type: 'RESET_STATE'});
+  userData.navigation.replace('Auth', {screen: 'SignIn'});
+  store.dispatch({type: ActionType.LOADING, Loading: false});
+
+  // await auth()
+  //   .signOut()
+  //   .then(res => {
+  //     persistor.purge();
+  //     persistor.flush();
+  //     GoogleSignin.signOut();
+  //     store.dispatch({type: ActionType.LOADING, Loading: false});
+  //     userData.navigation.replace('Auth', {screen: 'SignIn'});
+  //   })
+  //   .catch(err => {
+  //     console.log('Logout Error -->', err);
+  //   });
+
+  // await auth()
+  //   .signOut()
+  //   .then(res => {
+  //     userData.navigation.replace('Auth', {screen: 'SignIn'});
+  //   })
+  //   .catch(err => {
+  //     console.log('Logout Error -->', err);
+  //   });
 };
+
+export const setHasSeenNavTooltip = hasSeenNavTooltip => ({
+  type: ActionType.SET_HAS_SEEN_NAV_TOOLTIP,
+  payload: {hasSeenNavTooltip},
+});

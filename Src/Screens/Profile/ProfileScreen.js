@@ -1,13 +1,19 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import CommonStyles from '../../Common/CommonStyles';
+
+import { StyleSheet, View } from 'react-native';
+import { COLORS } from '../../Common/Global';
 
 export default function ProfileScreen() {
+
   return (
-    <View style={CommonStyles.container}>
-      <Text>ProfileScreen</Text>
+    <View style={styles.container}>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.primary
+  },
+});

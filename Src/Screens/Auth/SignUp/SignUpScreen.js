@@ -28,7 +28,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import PasswordInfo from '../../../Components/AuthComponents/PasswordInfo';
-import {Signup} from '../../../Redux/Actions/AuthAction';
+import {GoogleSigninAction, Signup} from '../../../Redux/Actions/AuthAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const {width, height} = Dimensions.get('window');
 
@@ -121,6 +122,18 @@ export default function SignUpScreen({navigation}) {
       Username: Username,
     };
     Signup({data: data, navigation: navigation, toast: toast});
+  };
+
+  const handleGoogleSignin = () => {
+    GoogleSignin.signIn().then(res => {
+      const data = {
+        username: res.user.name,
+        email: res.user.email,
+        profile: res.user.photo,
+        token: res.idToken,
+      };
+      GoogleSigninAction({data: data, toast: toast, navigation: navigation});
+    });
   };
 
   function hanndleOnOpen() {
@@ -289,7 +302,7 @@ export default function SignUpScreen({navigation}) {
         </KeyboardAvoidingView>
 
         <OrView />
-        <SocialButtons />
+        <SocialButtons onGooglePress={() => handleGoogleSignin()} />
 
         <View style={styles.AuthButtonView}>
           <AuthButton

@@ -6,7 +6,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  console.log('Action.Loading', action.type);
   switch (action.type) {
     case ActionType.APP_MODE:
       return {
