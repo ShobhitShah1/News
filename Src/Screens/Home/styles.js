@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {COLORS, FONTS, SIZES} from '../../Common/Global';
-import {normalize} from '../../Common/GlobalSize';
+import { StyleSheet } from 'react-native';
+import { COLORS, FONTS, SIZES } from '../../Common/Global';
+import { normalize } from '../../Common/GlobalSize';
 
 const styles = StyleSheet.create({
   HeaderNameView: {

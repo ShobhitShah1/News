@@ -1,5 +1,7 @@
-import CommonStyles from '../../Common/CommonStyles';
-import React, {useState, useEffect, useCallback} from 'react';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 import {
   Bubble,
   Composer,
@@ -8,14 +10,11 @@ import {
   LoadEarlier,
   Send,
 } from 'react-native-gifted-chat';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import firestore from '@react-native-firebase/firestore';
-import {ActivityIndicator, Text, View} from 'react-native';
-import {COLORS} from '../../Common/Global';
-// import { Icon } from 'react-native-vector-icons/Icon';
+import CommonStyles from '../../Common/CommonStyles';
+import { COLORS } from '../../Common/Global'; 
 
-export default function ChatScreen({}) {   
-  
+export default function ChatScreen({ }) {
+
   const [messages, setMessages] = useState([]);
   const [isLoadingEarlier, setIsLoadingEarlier] = useState(false);
   const [isLoadEarlierVisible, setIsLoadEarlierVisible] = useState(false);
@@ -23,7 +22,7 @@ export default function ChatScreen({}) {
   const [limit, setLimit] = useState(20);
   const navigation = useNavigation();
   const route = useRoute();
-  const {chatId} = '0d8GOOjf7AnJv351H8F2';
+  const { chatId } = '0d8GOOjf7AnJv351H8F2';
 
   useEffect(() => {
     const unsubscribeListener = firestore()
@@ -34,7 +33,6 @@ export default function ChatScreen({}) {
       .onSnapshot(querySnapshot => {
         const messages = querySnapshot.docs.map(doc => {
           const firebaseData = doc.data();
-          console.log('firebaseData ->', firebaseData);
           const data = {
             _id: doc.id,
             text: firebaseData.text,
@@ -51,7 +49,7 @@ export default function ChatScreen({}) {
 
   const onSend = useCallback((messages = []) => {
     messages.forEach(message => {
-      const {text, user, createdAt} = message;
+      const { text, user, createdAt } = message;
       firestore()
         .collection('chats')
         .doc('0d8GOOjf7AnJv351H8F2')

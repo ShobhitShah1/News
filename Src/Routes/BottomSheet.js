@@ -1,11 +1,13 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {COLORS} from '../Common/Global';
-import {normalize} from '../Common/GlobalSize';
+import DemoWithFlatlistTour from '../AppTour/DemoWithFlatlistTour';
+import { COLORS } from '../Common/Global';
+import { normalize } from '../Common/GlobalSize';
 import BottomHome from '../Components/BottomTab/BottomHome';
 import BottomProfile from '../Components/BottomTab/BottomProfile';
-import HomeScreen from '../Screens/Home/HomeScreen';
 import ProfileScreen from '../Screens/Profile/ProfileScreen';
+import HomeScreen from '../Screens/Home/HomeScreen';
+import SimpleAppTourSolo from '../AppTour/SimpleAppTourSolo';
 
 export default function BottomSheet() {
   const Bottom = createBottomTabNavigator();

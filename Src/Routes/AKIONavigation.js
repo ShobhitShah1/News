@@ -1,10 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { PermissionsAndroid, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 // Screens
-import { useEffect } from 'react';
 import AuthHome from '../Screens/Auth/Authhome/AuthHome';
 import SignInScreen from '../Screens/Auth/SignIn/SignInScreen';
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen';
@@ -15,34 +14,7 @@ import BottomSheet from './BottomSheet';
 const Stack = createNativeStackNavigator();
 
 export default function AKIONavigation() {
-  useEffect(() => {
-    requestSTORAGEPermission();
-  }, []);
-
-  const requestSTORAGEPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-        {
-          title: 'Cool Photo App READ_EXTERNAL_STORAGE Permission',
-          message:
-            'Cool Photo App needs access to your READ_EXTERNAL_STORAGE ' +
-            'so you can take awesome pictures.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the READ_EXTERNAL_STORAGE');
-      } else {
-        console.log('READ_EXTERNAL_STORAGE permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
+ 
   const AuthStack = () => {
     return (
       <Stack.Navigator
