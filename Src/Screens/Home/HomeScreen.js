@@ -5,8 +5,10 @@ import CommonStyles from '../../Common/CommonStyles';
 import ChatButton from '../../Components/ChatButton';
 import { Logout } from '../../Redux/Actions/AuthAction';
 import styles from './styles';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 export default function HomeScreen({ navigation }) {
+
   const UserData = useSelector((state) => state.auth.user);
 
   return (
@@ -18,8 +20,6 @@ export default function HomeScreen({ navigation }) {
           Hello, {UserData?.username} 👋
         </Text>
       </TouchableOpacity>
-
-      <ChatButton size={60} onPress={() => navigation.navigate('Chat')} />
     </View>
   );
 }
