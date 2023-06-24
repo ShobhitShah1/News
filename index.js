@@ -21,7 +21,7 @@ Text.defaultProps.allowFontScaling = false;
 
 const App = () => {
   const queryClient = new QueryClient()
-  return (
+  return ( 
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Provider store={store}>
@@ -38,7 +38,7 @@ const App = () => {
                   status={toast.status}
                 />
               ),
-            }}>
+            }}> 
             <AKIONavigation />
           </ToastProvider>
         </Provider>

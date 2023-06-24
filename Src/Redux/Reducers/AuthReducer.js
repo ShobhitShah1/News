@@ -14,13 +14,13 @@ export default (state = initialState, action) => {
         user: action.data,
         login_type: action.login_type,
       };
-    case 'RESET_STATE':
-      return initialState;
     case ActionType.SET_HAS_SEEN_NAV_TOOLTIP:
       return {
         ...state,
         hasSeenNavTooltip: action.payload.hasSeenNavTooltip,
       };
+    case 'RESET_STATE':
+      return initialState;
     default:
       return state;
   }

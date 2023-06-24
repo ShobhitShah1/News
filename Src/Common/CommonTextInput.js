@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: width - normalize(50),
-    height: 50,
+    height: 55,
     backgroundColor: COLORS.black,
     borderWidth: 1,
     borderColor: COLORS.textInputBorder, //activeBorderColor

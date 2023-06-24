@@ -1,5 +1,5 @@
-import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import React from 'react';
+import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import React, { useRef, useState } from 'react';
 import {
   Animated,
   Dimensions,
@@ -10,13 +10,13 @@ import {
   Vibration,
   View,
 } from 'react-native';
-import {useToast} from 'react-native-toast-notifications';
+import { useToast } from 'react-native-toast-notifications';
 import AuthButton from '../../../Common/AuthComponents/AuthButton';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import CommonTextInput from '../../../Common/CommonTextInput';
-import {COLORS} from '../../../Common/Global';
-import {normalize} from '../../../Common/GlobalSize';
+import { COLORS } from '../../../Common/Global';
+import { normalize } from '../../../Common/GlobalSize';
 
 import Images from '../../../Common/Images';
 import styles from './styles';
@@ -26,29 +26,29 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import PasswordInfo from '../../../Components/AuthComponents/PasswordInfo';
-import {GoogleSigninAction, Signup} from '../../../Redux/Actions/AuthAction';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSigninAction, Signup } from '../../../Redux/Actions/AuthAction';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
-export default function SignUpScreen({navigation}) {
+export default function SignUpScreen({ navigation }) {
   const toast = useToast();
   const isLoading = useSelector(state => state.Loading.Loading);
 
-  const [Username, setUsername] = React.useState(null);
-  const [Email, setEmail] = React.useState(null);
-  const [Password, setPassword] = React.useState(null);
-  const [showPassword, setshowPassword] = React.useState(true);
+  const [Username, setUsername] = useState(null);
+  const [Email, setEmail] = useState(null);
+  const [Password, setPassword] = useState(null);
+  const [showPassword, setshowPassword] = useState(true);
 
-  const [isNameFocused, setisNameFocused] = React.useState(false);
-  const [isEmailFocused, setisEmailFocused] = React.useState(false);
-  const [isPasswordFocused, setisPasswordFocused] = React.useState(false);
+  const [isNameFocused, setisNameFocused] = useState(false);
+  const [isEmailFocused, setisEmailFocused] = useState(false);
+  const [isPasswordFocused, setisPasswordFocused] = useState(false);
 
   // Bottom Sheet
-  const SheetRef = React.useRef(null);
-  const [isOpen, setIsopen] = React.useState(true);
+  const SheetRef = useRef(null);
+  const [isOpen, setIsopen] = useState(true);
 
   const snapPoints = ['23%'];
 
@@ -82,37 +82,29 @@ export default function SignUpScreen({navigation}) {
   const passwordStrength = calculatePasswordStrength(Password);
 
   const Validation = () => {
-    if (Username === null) {
-      toast.show('Enter Username', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    if (!Username) {
+      showToast('Enter Username', 'fail');
       Vibration.vibrate(50);
-    } else if (Email === null) {
-      toast.show('Enter Email', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    } else if (!Email) {
+      showToast('Enter Email', 'fail');
       Vibration.vibrate(50);
-    } else if (Password === null) {
-      toast.show('Enter Password', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    } else if (!Password) {
+      showToast('Enter Password', 'fail');
       Vibration.vibrate(50);
     } else if (Password.length < 7) {
-      toast.show('Password must contain at least 7 characters', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+      showToast('Password must contain at least 7 characters', 'fail');
       Vibration.vibrate(50);
     } else {
       handleSignup();
     }
+  };
+
+  const showToast = (message, status) => {
+    toast.show(message, {
+      type: 'custom_toast',
+      title: null,
+      status,
+    });
   };
 
   const handleSignup = async () => {
@@ -121,7 +113,7 @@ export default function SignUpScreen({navigation}) {
       Password: Password,
       Username: Username,
     };
-    Signup({data: data, navigation: navigation, toast: toast});
+    Signup({ data: data, navigation: navigation, toast: toast });
   };
 
   const handleGoogleSignin = () => {
@@ -132,7 +124,7 @@ export default function SignUpScreen({navigation}) {
         profile: res.user.photo,
         token: res.idToken,
       };
-      GoogleSigninAction({data: data, toast: toast, navigation: navigation});
+      GoogleSigninAction({ data: data, toast: toast, navigation: navigation });
     });
   };
 
@@ -147,19 +139,11 @@ export default function SignUpScreen({navigation}) {
   };
 
   const CheckFocusForAll = () => {
-    if (isNameFocused) {
-      return true;
-    } else if (isEmailFocused) {
-      return true;
-    } else if (isPasswordFocused) {
-      return true;
-    } else {
-      return false;
-    }
+    return isNameFocused || isEmailFocused || isPasswordFocused;
   };
 
   return (
-    <View style={[styles.container, {backgroundColor: COLORS.black}]}>
+    <View style={[styles.container, { backgroundColor: COLORS.black }]}>
       <ScrollView keyboardShouldPersistTaps="handled">
         <Animated.View style={styles.headerContainer}>
           <Animated.View style={styles.headerView}>
@@ -176,7 +160,7 @@ export default function SignUpScreen({navigation}) {
         <KeyboardAvoidingView>
           {/* Name View */}
 
-          <Animated.View style={{width: width}}>
+          <Animated.View style={{ width: width }}>
             <Animated.View>
               <Animated.View style={styles.inputheaderView}>
                 <Animated.Text style={styles.inputheaderText}>
@@ -317,8 +301,8 @@ export default function SignUpScreen({navigation}) {
             Already have an account?{' '}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Auth', {screen: 'SignIn'})}>
-            <Text style={[styles.haveAnAccountText, {color: COLORS.white}]}>
+            onPress={() => navigation.navigate('Auth', { screen: 'SignIn' })}>
+            <Text style={[styles.haveAnAccountText, { color: COLORS.white }]}>
               Sign in
             </Text>
           </TouchableOpacity>
@@ -327,9 +311,9 @@ export default function SignUpScreen({navigation}) {
 
       <BottomSheetModalProvider>
         <BottomSheetModal
-          handleIndicatorStyle={{backgroundColor: COLORS.white}}
-          backgroundStyle={{backgroundColor: COLORS.black}}
-          containerStyle={{backgroundColor: 'rgba(0,0,0,0.5)'}}
+          handleIndicatorStyle={{ backgroundColor: COLORS.white }}
+          backgroundStyle={{ backgroundColor: COLORS.black }}
+          containerStyle={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
           ref={SheetRef}
           index={0}
           snapPoints={snapPoints}

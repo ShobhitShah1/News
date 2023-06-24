@@ -1,163 +1,155 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {Vibration} from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Vibration } from 'react-native';
 import * as ActionType from '../Actions/ActionType';
-import {store} from '../Store/Store';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {GoogleAuthProvider} from '@react-native-firebase/auth';
-import {persistor} from '../Store/Store';
+import { store } from '../Store/Store';
+import LoggerAction from './LoggerAction';
 
-const Success = data => {
-  data.toast.show('signup successfully ✨', {
+const Success = ({ navigation, toast }) => {
+  toast.show('signup successfully ✨', {
     type: 'custom_toast',
     title: 'Woooh! Welcome 🚀',
     status: 'success',
   });
   Vibration.vibrate(50);
   setTimeout(() => {
-    data.navigation.replace('BottomSheet', {screen: 'HomeScreen'});
+    navigation.replace('BottomSheet', { screen: 'HomeScreen' });
   }, 1000);
-  store.dispatch({type: ActionType.LOADING, Loading: false});
+  store.dispatch({ type: ActionType.LOADING, Loading: false });
 };
 
-const Errors = data => {
-  data.toast.show(data.error.message, {
+const Errors = ({ error, navigation, toast }) => {
+  toast.show('Please Try Again', {
     type: 'custom_toast',
-    title: 'Something went wrong',
+    title: error || 'Something went wrong',
     status: 'fail',
   });
   Vibration.vibrate(50);
-  store.dispatch({type: ActionType.LOADING, Loading: false});
+  store.dispatch({ type: ActionType.LOADING, Loading: false });
 };
 
-export const Signup = async userData => {
-  store.dispatch({type: ActionType.LOADING, Loading: true});
+export const logActivity = activity => ({
+  type: ActionType.LOG_ACTIVITY,
+  payload: activity,
+});
+
+export const Signup = async ({ data: { Email, Password, Username }, navigation, toast }) => {
+  store.dispatch({ type: ActionType.LOADING, Loading: true });
   try {
-    const userCredential = await auth().createUserWithEmailAndPassword(
-      userData.data.Email,
-      userData.data.Password,
-    );
+    const userCredential = await auth().createUserWithEmailAndPassword(Email, Password);
     await firestore().collection('users').doc(userCredential.user.uid).set({
-      username: userData.data.Username,
-      email: userData.data.Email,
-      password: userData.data.Password,
+      username: Username,
+      email: Email,
+      password: Password,
     });
     store.dispatch({
       type: ActionType.USER_AUTH,
       login_type: 'Email',
-      data: {
-        username: userData.data.Username,
-        email: userData.data.Email,
-        password: userData.data.Password,
-      },
+      data: { username: Username, email: Email, password: Password },
     });
-    Success({navigation: userData.navigation, toast: userData.toast});
+    Success({ navigation, toast });
+    LoggerAction({
+      Method: 'POST',
+      ArticalClick: false,
+      ApiName: 'Firebase New Account Email & Password 🔗',
+      APIResponse: 'Success',
+      CustomTitle: 'Created Account With Email And Passowrd',
+      CustomDescription: `${Username} Created New Account at ${new Date().toString()}. Thanks For Your Time ${Username} 🙇`,
+    })
   } catch (error) {
+    Errors({ error, navigation, toast });
+  }
+};
+
+export const GoogleSigninAction = async ({ data, navigation, toast }) => {
+  store.dispatch({ type: ActionType.LOADING, Loading: true });
+  try {
+    store.dispatch({
+      type: ActionType.USER_AUTH,
+      data,
+      login_type: 'Google',
+    });
+    Success({ navigation, toast });
+    LoggerAction({
+      Method: 'POST',
+      ArticalClick: false,
+      ArticalID: '',
+      ApiName: 'Google Login 🔗',
+      APIResponse: 'Success',
+      CustomTitle: `${data.username} Login Account With Google`,
+      CustomDescription: `${data.username} Login With Google at ${new Date().toString()}. Thanks For Your Time ${data.username} 🙇`,
+    })
+  } catch (error) {
+    store.dispatch({ type: ActionType.LOADING, Loading: false });
+  }
+};
+
+export const Signin = async (userData) => {
+  store.dispatch({ type: ActionType.LOADING, Loading: true });
+  try {
+    const res = await auth().signInWithEmailAndPassword(userData.data.Email, userData.data.Password);
+    console.log(res);
+    store.dispatch({ type: ActionType.LOADING, Loading: false });
+    await GetAccountDetail(userData);
+  } catch (err) {
     Errors({
-      error: error,
+      error: 'Cant Login Right Now',
       navigation: userData.navigation,
       toast: userData.toast,
     });
   }
 };
 
-export const GoogleSigninAction = async userData => {
-  store.dispatch({type: ActionType.LOADING, Loading: true});
-  try {
-    store.dispatch({
-      type: ActionType.USER_AUTH,
-      data: userData.data,
-      login_type: 'Google',
-    });
-    // firestore().collection('users').add({
-    //   username: userData.data.Username,
-    //   email: userData.data.Email,
-    //   // password: userData.data.Password,
-    //   profilePic: userData.data.Profile,
-    // });
-    Success({navigation: userData.navigation, toast: userData.toast});
-  } catch (error) {
-    store.dispatch({type: ActionType.LOADING, Loading: false});
-  }
-};
-
-export const Signin = userData => {
-  store.dispatch({type: ActionType.LOADING, Loading: true});
-  auth()
-    .signInWithEmailAndPassword(userData.data.Email, userData.data.Password)
-    .then(res => {
-      store.dispatch({type: ActionType.LOADING, Loading: false});
-      GetAccountDetail(userData);
-    })
-    .catch(err => {
+export const GetAccountDetail = async (userData) => {
+  const user = await auth().currentUser;
+  if (user) {
+    const userDoc = await firestore().collection('users').doc(user.uid).get();
+    if (userDoc.exists) {
+      store.dispatch({
+        type: ActionType.USER_AUTH,
+        login_type: 'Email',
+        data: {
+          username: userDoc.data().username,
+          email: userDoc.data().email,
+          password: userDoc.data().password,
+        },
+      });
+      Success({ navigation: userData.navigation, toast: userData.toast });
+      LoggerAction({
+        Method: 'POST',
+        ArticalClick: false,
+        ApiName: 'Firebase Email Login 🔗',
+        APIResponse: 'Success',
+        CustomTitle: 'Login With Email And Passowrd',
+        CustomDescription: `${userDoc.data().username} Login Account at ${new Date().toString()}. Thanks For Your Time ${userDoc.data().username} 🙇`,
+      })
+    } else {
       Errors({
-        error: err,
+        error: 'No such user!',
         navigation: userData.navigation,
         toast: userData.toast,
       });
-    });
-};
-
-export const GetAccountDetail = async userData => {
-  const User = await auth().currentUser.uid;
-  await firestore()
-    .collection('users')
-    .doc(User)
-    .get()
-    .then(doc => {
-      if (doc.exists) {
-        store.dispatch({
-          type: ActionType.USER_AUTH,
-          login_type: 'Email',
-          data: {
-            username: doc.data().username,
-            email: doc.data().email,
-            password: doc.data().password,
-          },
-        });
-        Success({navigation: userData.navigation, toast: userData.toast});
-      } else {
-        console.log('No such user!');
-      }
-    })
-    .catch(error => {
-      console.log('Error getting user data:', error);
-    });
-};
-
-export const Logout = async userData => {
-  store.dispatch({type: ActionType.LOADING, Loading: true});
-  if (store.getState().auth.login_type === 'Google') {
-    GoogleSignin.signOut().then(RES => console.log(RES));
+    }
+  } else {
+    console.log('User not logged in.');
   }
-  store.dispatch({type: 'RESET_STATE'});
-  userData.navigation.replace('Auth', {screen: 'SignIn'});
-  store.dispatch({type: ActionType.LOADING, Loading: false});
-
-  // await auth()
-  //   .signOut()
-  //   .then(res => {
-  //     persistor.purge();
-  //     persistor.flush();
-  //     GoogleSignin.signOut();
-  //     store.dispatch({type: ActionType.LOADING, Loading: false});
-  //     userData.navigation.replace('Auth', {screen: 'SignIn'});
-  //   })
-  //   .catch(err => {
-  //     console.log('Logout Error -->', err);
-  //   });
-
-  // await auth()
-  //   .signOut()
-  //   .then(res => {
-  //     userData.navigation.replace('Auth', {screen: 'SignIn'});
-  //   })
-  //   .catch(err => {
-  //     console.log('Logout Error -->', err);
-  //   });
 };
 
-export const setHasSeenNavTooltip = hasSeenNavTooltip => ({
+export const Logout = async (userData) => {
+  if (store.getState().auth.login_type === 'Google') {
+    try {
+      await GoogleSignin.signOut();
+    } catch (error) {
+      console.log('Error signing out from Google:', error);
+    }
+  }
+  store.dispatch({ type: 'RESET_STATE' });
+  userData.navigation.replace('Auth', { screen: 'SignIn' });
+  store.dispatch({ type: ActionType.LOADING, Loading: false });
+};
+
+export const setHasSeenNavTooltip = (hasSeenNavTooltip) => ({
   type: ActionType.SET_HAS_SEEN_NAV_TOOLTIP,
-  payload: {hasSeenNavTooltip},
+  payload: { hasSeenNavTooltip },
 });
