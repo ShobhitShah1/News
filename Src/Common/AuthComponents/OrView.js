@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     height: 1,
     justifyContent: 'center',
     alignSelf: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.primary,
   },
   orText: {
     color: COLORS.white,
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     height: 1,
     justifyContent: 'center',
     alignSelf: 'center',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.primary,
   },
 });

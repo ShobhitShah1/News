@@ -4,7 +4,7 @@ import {COLORS, DimensionsSize} from './Global';
 const CommonStyles = StyleSheet.create({
   container: {
     flex: 1,
-    ...StyleSheet.absoluteFillObject,
+    // ...StyleSheet.absoluteFillObject,
     backgroundColor: COLORS.black,
   },
 });

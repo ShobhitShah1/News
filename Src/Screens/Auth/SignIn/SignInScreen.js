@@ -25,6 +25,9 @@ import {normalize} from '../../../Common/GlobalSize';
 import Images from '../../../Common/Images';
 import {GoogleSigninAction, Signin} from '../../../Redux/Actions/AuthAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Loader from '../../../Common/Loader';
+import {store} from '../../../Redux/Store/Store';
+import * as ActionType from '../../../Redux/Actions/ActionType';
 
 const {width, height} = Dimensions.get('window');
 
@@ -86,21 +89,25 @@ function SignInScreen() {
     Signin({data: data, navigation: navigation, toast: toast});
   };
 
-  const handleGoogleSignin = () => {
-    GoogleSignin.signIn().then(res => {
-      const data = {
-        username: res.user.name,
-        email: res.user.email,
-        profile: res.user.photo,
-        token: res.idToken,
-      };
-      GoogleSigninAction({data: data, toast: toast, navigation: navigation});
+  // const handleGoogleSignin = async () => {
+  //   store.dispatch({type: ActionType.LOADING, Loading: true});
+  //   const {idToken} = await GoogleSignin.signIn();
+  //   GoogleSigninAction({idToken: idToken, toast: toast, navigation: navigation});
+  // };
+
+  const handleFacebookSignin = () => {
+    toast.show('Coming Soon...', {
+      type: 'custom_toast',
+      title: null,
+      status: 'fail',
     });
   };
 
   return (
     <View style={[styles.container, {backgroundColor: COLORS.black}]}>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
         <Animated.View style={styles.headerContainer}>
           <Animated.View style={styles.headerView}>
             <Animated.Image source={Images.SignIn2} style={styles.images} />
@@ -131,7 +138,7 @@ function SignInScreen() {
                   onFocus={handleFocusEmail}
                   onBlur={handleBlurEmail}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   placeholder={'Enter email address'}
                   placeholderTextColor={COLORS.white}
@@ -168,7 +175,7 @@ function SignInScreen() {
                   onFocus={handleFocusPassword}
                   onBlur={handleBlurPassword}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   secureTextEntry={showPassword}
                   checkPassword={true}
@@ -202,7 +209,7 @@ function SignInScreen() {
 
         <OrView />
 
-        <SocialButtons onGooglePress={() => handleGoogleSignin()} />
+        <SocialButtons onFacebookPress={() => handleFacebookSignin()} />
 
         <View style={styles.BottomView}>
           <View style={styles.AuthButtonView}>
@@ -212,7 +219,7 @@ function SignInScreen() {
                 Keyboard.dismiss();
                 Validation();
               }}
-              isLoading={isLoading}
+              isLoading={false}
             />
           </View>
 
@@ -221,13 +228,15 @@ function SignInScreen() {
               Don't have an account?{' '}
             </Text>
             <TouchableOpacity
+              activeOpacity={0.7}
               onPress={() => navigation.navigate('Auth', {screen: 'SignUp'})}>
-              <Text style={[styles.haveAnAccountText, {color: COLORS.white}]}>
+              <Text style={[styles.haveAnAccountText, {color: COLORS.primary}]}>
                 Sign up now.
               </Text>
             </TouchableOpacity>
           </View>
         </View>
+        {isLoading && <Loader size={100} />}
       </ScrollView>
     </View>
   );
@@ -321,7 +330,5 @@ const styles = StyleSheet.create({
   },
   BottomView: {
     marginVertical: 10,
-    // position: 'absolute',
-    // bottom: 0
   },
 });

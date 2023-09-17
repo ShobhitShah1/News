@@ -1,7 +1,3 @@
-/**
- * @format
- */
-
 import React from 'react';
 import { AppRegistry, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -21,12 +17,12 @@ Text.defaultProps.allowFontScaling = false;
 
 const App = () => {
   const queryClient = new QueryClient()
-  return ( 
+  return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Provider store={store}>
           <ToastProvider
-            placement="bottom"
+            placement='bottom'
             duration={4000}
             offset={30}
             animationType="zoom-in"
@@ -38,7 +34,7 @@ const App = () => {
                   status={toast.status}
                 />
               ),
-            }}> 
+            }}>
             <AKIONavigation />
           </ToastProvider>
         </Provider>

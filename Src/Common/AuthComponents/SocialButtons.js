@@ -4,19 +4,36 @@ import {COLORS, FAMILY, FONTS, SIZES, DimensionsSize} from '../Global';
 import {normalize} from '../GlobalSize';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; //facebook
 import AntDesign from 'react-native-vector-icons/AntDesign'; //Google witter
+import {GoogleSigninAction} from '../../Redux/Actions/AuthAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {store} from '../../Redux/Store/Store';
+import {useToast} from 'react-native-toast-notifications';
 
-const SocialButtons = ({onGooglePress, onFacebookPress}) => {
+const SocialButtons = ({onFacebookPress}) => {
+  const navigation = useNavigation();
+  const toast = useToast();
+
+  const onGooglePress = async () => {
+    store.dispatch({type: ActionType.LOADING, Loading: true});
+    const {idToken} = await GoogleSignin.signIn();
+    GoogleSigninAction({
+      idToken: idToken,
+      toast: toast,
+      navigation: navigation,
+    });
+  };
+
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={styles.flexView}>
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onGooglePress}>
+          onPress={() => {}}>
           <AntDesign
             name="google"
             size={20}
-            color={COLORS.google}
+            color={COLORS.primary}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -28,7 +45,7 @@ const SocialButtons = ({onGooglePress, onFacebookPress}) => {
           <FontAwesome
             name="facebook"
             size={20}
-            color={COLORS.facebook}
+            color={COLORS.primary}
             style={styles.icon}
           />
         </TouchableOpacity>

@@ -1,5 +1,5 @@
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import React, { useRef, useState } from 'react';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import React, {useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -10,13 +10,13 @@ import {
   Vibration,
   View,
 } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
+import {useToast} from 'react-native-toast-notifications';
 import AuthButton from '../../../Common/AuthComponents/AuthButton';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import CommonTextInput from '../../../Common/CommonTextInput';
-import { COLORS } from '../../../Common/Global';
-import { normalize } from '../../../Common/GlobalSize';
+import {COLORS, SIZES} from '../../../Common/Global';
+import {normalize} from '../../../Common/GlobalSize';
 
 import Images from '../../../Common/Images';
 import styles from './styles';
@@ -26,14 +26,15 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import PasswordInfo from '../../../Components/AuthComponents/PasswordInfo';
-import { GoogleSigninAction, Signup } from '../../../Redux/Actions/AuthAction';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import {GoogleSigninAction, Signup} from '../../../Redux/Actions/AuthAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Loader from '../../../Common/Loader';
 
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
-export default function SignUpScreen({ navigation }) {
+export default function SignUpScreen({navigation}) {
   const toast = useToast();
   const isLoading = useSelector(state => state.Loading.Loading);
 
@@ -113,18 +114,26 @@ export default function SignUpScreen({ navigation }) {
       Password: Password,
       Username: Username,
     };
-    Signup({ data: data, navigation: navigation, toast: toast });
+    Signup({data: data, navigation: navigation, toast: toast});
   };
 
-  const handleGoogleSignin = () => {
-    GoogleSignin.signIn().then(res => {
-      const data = {
-        username: res.user.name,
-        email: res.user.email,
-        profile: res.user.photo,
-        token: res.idToken,
-      };
-      GoogleSigninAction({ data: data, toast: toast, navigation: navigation });
+  // const handleGoogleSignin = () => {
+  //   GoogleSignin.signIn().then(res => {
+  //     const data = {
+  //       username: res.user.name,
+  //       email: res.user.email,
+  //       profile: res.user.photo,
+  //       token: res.idToken,
+  //     };
+  //     GoogleSigninAction({ data: data, toast: toast, navigation: navigation });
+  //   });
+  // };
+
+  const handleFacebookSignin = () => {
+    toast.show('Coming Soon...', {
+      type: 'custom_toast',
+      title: null,
+      status: 'fail',
     });
   };
 
@@ -143,8 +152,10 @@ export default function SignUpScreen({ navigation }) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: COLORS.black }]}>
-      <ScrollView keyboardShouldPersistTaps="handled">
+    <View style={[styles.container, {backgroundColor: COLORS.black}]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
         <Animated.View style={styles.headerContainer}>
           <Animated.View style={styles.headerView}>
             <Animated.Image source={Images.SignIn3} style={styles.images} />
@@ -160,7 +171,7 @@ export default function SignUpScreen({ navigation }) {
         <KeyboardAvoidingView>
           {/* Name View */}
 
-          <Animated.View style={{ width: width }}>
+          <Animated.View style={{width: width}}>
             <Animated.View>
               <Animated.View style={styles.inputheaderView}>
                 <Animated.Text style={styles.inputheaderText}>
@@ -176,7 +187,7 @@ export default function SignUpScreen({ navigation }) {
                   onFocus={handleFocusName}
                   onBlur={handleBlurName}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   placeholder={'Enter username'}
                   placeholderTextColor={COLORS.white}
@@ -208,7 +219,7 @@ export default function SignUpScreen({ navigation }) {
                   onFocus={handleFocusEmail}
                   onBlur={handleBlurEmail}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   placeholder={'Enter email address'}
                   placeholderTextColor={COLORS.white}
@@ -253,7 +264,7 @@ export default function SignUpScreen({ navigation }) {
                     borderColor:
                       isPasswordFocused === true
                         ? getColor(passwordStrength)
-                        : COLORS.white,
+                        : COLORS.primary,
                   }}
                   secureTextEntry={showPassword}
                   checkPassword={true}
@@ -286,13 +297,13 @@ export default function SignUpScreen({ navigation }) {
         </KeyboardAvoidingView>
 
         <OrView />
-        <SocialButtons onGooglePress={() => handleGoogleSignin()} />
+        <SocialButtons onFacebookPress={() => handleFacebookSignin()} />
 
         <View style={styles.AuthButtonView}>
           <AuthButton
             lable={'Create an account'}
             onPress={Validation}
-            isLoading={isLoading}
+            isLoading={false}
           />
         </View>
 
@@ -301,19 +312,21 @@ export default function SignUpScreen({ navigation }) {
             Already have an account?{' '}
           </Text>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Auth', { screen: 'SignIn' })}>
-            <Text style={[styles.haveAnAccountText, { color: COLORS.white }]}>
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('Auth', {screen: 'SignIn'})}>
+            <Text style={[styles.haveAnAccountText, {color: COLORS.primary}]}>
               Sign in
             </Text>
           </TouchableOpacity>
         </View>
+        {isLoading && <Loader size={100} />}
       </ScrollView>
 
       <BottomSheetModalProvider>
         <BottomSheetModal
-          handleIndicatorStyle={{ backgroundColor: COLORS.white }}
-          backgroundStyle={{ backgroundColor: COLORS.black }}
-          containerStyle={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          handleIndicatorStyle={{backgroundColor: COLORS.white}}
+          backgroundStyle={{backgroundColor: COLORS.black}}
+          containerStyle={{backgroundColor: 'rgba(0,0,0,0.5)'}}
           ref={SheetRef}
           index={0}
           snapPoints={snapPoints}

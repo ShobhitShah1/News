@@ -10,12 +10,14 @@ const {width, height} = Dimensions.get('window');
 export default function SplashScreen({navigation}) {
   const Status = useSelector(state => state?.auth?.user);
 
+  console.log("Status",Status)
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (Status !== null && Status !== undefined) {
         navigation.replace('BottomSheet', {screen: 'HomeScreen'});
       } else {
-        navigation.replace('Auth', {screen: 'SignIn'});
+        navigation.replace('Auth', {screen: 'AuthHome'});
       }
     }, 2000);
 
@@ -25,7 +27,7 @@ export default function SplashScreen({navigation}) {
   return (
     <View style={styles.Container}>
       <View style={styles.ImageView}>
-        <Text style={{...FONTS.h1, textAlign: 'center', color: COLORS.white}}>
+        <Text style={{...FONTS.h1, textAlign: 'center', color: COLORS.primary}}>
           Hy, Welcome 👋
         </Text>
       </View>

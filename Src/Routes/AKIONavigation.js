@@ -3,25 +3,23 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-// Screens
-import AuthHome from '../Screens/Auth/Authhome/AuthHome';
+//* Screens
 import SignInScreen from '../Screens/Auth/SignIn/SignInScreen';
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen';
-import ChatScreen from '../Screens/Chat/ChatScreen';
 import SplashScreen from '../Screens/Splash/SplashScreen';
 import BottomSheet from './BottomSheet';
 
 const Stack = createNativeStackNavigator();
 
 export default function AKIONavigation() {
- 
+
   const AuthStack = () => {
     return (
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="AuthHome" component={AuthHome} />
+        {/* <Stack.Screen name="AuthHome" component={AuthHome} /> */}
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
@@ -37,7 +35,7 @@ export default function AKIONavigation() {
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Auth" component={AuthStack} />
         <Stack.Screen name="BottomSheet" component={BottomSheet} />
-        <Stack.Screen name="Chat" component={ChatScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
