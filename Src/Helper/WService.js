@@ -4,7 +4,7 @@ import qs from 'querystring';
 function WService() {}
 
 WService.prototype.URI = (resource, params = null) => {
-  var uri = 'https://zemenawe.com/api/app/' + resource;
+  var uri = 'API' + resource;
   const realParams = qs.stringify(params);
   return uri + '?' + realParams;
 };

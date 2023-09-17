@@ -8,6 +8,8 @@ import {GoogleSigninAction} from '../../Redux/Actions/AuthAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {store} from '../../Redux/Store/Store';
 import {useToast} from 'react-native-toast-notifications';
+import {useNavigation} from '@react-navigation/native';
+import * as ActionType from '../../Redux/Actions/ActionType';
 
 const SocialButtons = ({onFacebookPress}) => {
   const navigation = useNavigation();
@@ -29,7 +31,7 @@ const SocialButtons = ({onFacebookPress}) => {
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={() => {}}>
+          onPress={() => onGooglePress()}>
           <AntDesign
             name="google"
             size={20}
