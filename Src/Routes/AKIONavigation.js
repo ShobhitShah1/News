@@ -8,6 +8,7 @@ import SignInScreen from '../Screens/Auth/SignIn/SignInScreen';
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen';
 import SplashScreen from '../Screens/Splash/SplashScreen';
 import BottomSheet from './BottomSheet';
+import NetworkStatusListener from '../Components/InternetServices/NetworkStatusListener'; 
 
 const Stack = createNativeStackNavigator();
 
@@ -34,9 +35,9 @@ export default function AKIONavigation() {
         }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Auth" component={AuthStack} />
-        <Stack.Screen name="BottomSheet" component={BottomSheet} />
-
+        <Stack.Screen name="BottomSheet" component={BottomSheet} /> 
       </Stack.Navigator>
+      <NetworkStatusListener />
     </NavigationContainer>
   );
 }

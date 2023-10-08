@@ -5,7 +5,6 @@ const initialState = {
 }
 
 const UserActivityReducer = (state = initialState, action) => {
-  console.log("Action:", action);
   switch (action.type) {
     case ActionType.LOG_ACTIVITY:
       return {

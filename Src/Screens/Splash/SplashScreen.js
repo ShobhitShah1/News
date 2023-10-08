@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, Image, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {COLORS, FONTS} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import Images from '../../Common/Images';
@@ -10,9 +10,9 @@ const {width, height} = Dimensions.get('window');
 export default function SplashScreen({navigation}) {
   const Status = useSelector(state => state?.auth?.user);
 
-  console.log("Status",Status)
-
   useEffect(() => {
+    console.log("======================== 👋 UserInfo 🚀 =======================")
+    console.log("Status",Status)
     const timeout = setTimeout(() => {
       if (Status !== null && Status !== undefined) {
         navigation.replace('BottomSheet', {screen: 'HomeScreen'});
@@ -26,9 +26,16 @@ export default function SplashScreen({navigation}) {
 
   return (
     <View style={styles.Container}>
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.black}
+        animated={true}
+        networkActivityIndicatorVisible={true}
+        translucent={true}
+      />
       <View style={styles.ImageView}>
         <Text style={{...FONTS.h1, textAlign: 'center', color: COLORS.primary}}>
-          Hy, Welcome 👋
+          {Status !== null && Status !== undefined ? `Hy, Welcome ${Status.name} 🚀` : "Hy, Welcome 👋"}
         </Text>
       </View>
     </View>

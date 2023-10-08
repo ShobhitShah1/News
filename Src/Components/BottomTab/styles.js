@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     width: normalize(130),
     height: normalize(40),
     borderRadius: SIZES.radius,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
   },

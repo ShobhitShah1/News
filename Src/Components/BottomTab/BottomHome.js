@@ -8,10 +8,7 @@ import styles from './styles';
 const BottomHome = ({focused}) => {
   return focused ? (
     <View style={styles.ActiveimageView}>
-      {/* <Image source={Icons.HomeBlack} style={styles.image} /> */}
-      <Text style={{...FONTS.h2, color: COLORS.black}}>
-        Home
-      </Text>
+      <Text style={{...FONTS.h2, color: COLORS.white}}>Home</Text>
     </View>
   ) : (
     <View style={styles.InActiveimageView}>

@@ -8,7 +8,7 @@ import styles from './styles';
 const BottomProfile = ({focused}) => {
   return focused ? (
     <View style={styles.ActiveimageView}>
-       <Text style={{...FONTS.h2, color: COLORS.black}}>
+       <Text style={{...FONTS.h2, color: COLORS.white}}>
         Profile
       </Text>
     </View>

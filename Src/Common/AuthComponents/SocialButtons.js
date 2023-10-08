@@ -11,7 +11,7 @@ import {useToast} from 'react-native-toast-notifications';
 import {useNavigation} from '@react-navigation/native';
 import * as ActionType from '../../Redux/Actions/ActionType';
 
-const SocialButtons = ({onFacebookPress}) => {
+const SocialButtons = () => {
   const navigation = useNavigation();
   const toast = useToast();
 
@@ -22,6 +22,14 @@ const SocialButtons = ({onFacebookPress}) => {
       idToken: idToken,
       toast: toast,
       navigation: navigation,
+    });
+  };
+
+  const onFacebookPress = async () => {
+    toast.show('Coming Soon...', {
+      type: 'custom_toast',
+      title: null,
+      status: 'fail',
     });
   };
 
@@ -43,7 +51,7 @@ const SocialButtons = ({onFacebookPress}) => {
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onFacebookPress}>
+          onPress={() => onFacebookPress()}>
           <FontAwesome
             name="facebook"
             size={20}
@@ -52,9 +60,17 @@ const SocialButtons = ({onFacebookPress}) => {
           />
         </TouchableOpacity>
 
-        {/* <TouchableOpacity style={styles.ButtonView} activeOpacity={0.7} onPress={onPress}>
-                    <AntDesign name='twitter' size={20} color={COLORS.twitter} style={styles.icon} />
-                </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          style={styles.ButtonView}
+          activeOpacity={0.7}
+          onPress={onPress}>
+          <AntDesign
+            name="twitter"
+            size={20}
+            color={COLORS.twitter}
+            style={styles.icon}
+          />
+        </TouchableOpacity> */}
       </Animated.View>
     </Animated.View>
   );

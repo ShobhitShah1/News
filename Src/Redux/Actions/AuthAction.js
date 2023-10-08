@@ -1,10 +1,9 @@
 import auth, { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {Vibration} from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { Vibration } from 'react-native';
 import * as ActionType from '../Actions/ActionType';
-import {store} from '../Store/Store';
-import LoggerAction from './LoggerAction';
+import { store } from '../Store/Store';
 
 const Success = ({navigation, toast}) => {
   toast.show('signup successfully ✨', {
@@ -56,52 +55,37 @@ export const Signup = async ({
       data: {username: Username, email: Email, password: Password},
     });
     Success({navigation, toast});
-    // LoggerAction({
-    //   Method: 'POST',
-    //   ArticalClick: false,
-    //   ApiName: 'Firebase New Account Email & Password 🔗',
-    //   APIResponse: 'Success',
-    //   CustomTitle: 'Created Account With Email And Passowrd',
-    //   CustomDescription: `${Username} Created New Account at ${new Date().toString()}. Thanks For Your Time ${Username} 🙇`,
-    // });
   } catch (error) {
     Errors({error, navigation, toast});
   }
 };
 
 export const GoogleSigninAction = async ({idToken, navigation, toast}) => {
-  console.log('idToken', idToken);
-  // store.dispatch({type: ActionType.LOADING, Loading: true});
-  try { 
-
+  try {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    console.log("googleCredential",googleCredential)
-    const userCredential = await firebase.auth().signInWithCredential(googleCredential);
 
-    console.log("userCredential",userCredential)
+    const userCredential = await firebase
+      .auth()
+      .signInWithCredential(googleCredential);
 
     const user = userCredential.user;
-
-    console.log("user",user)
 
     const usersRef = firebase.app().firestore().collection('users');
 
     const firestoreDocument = await usersRef.doc(user.uid).get();
-    
-    if (firestoreDocument.exists) { 
-      console.log('Google Data:', firestoreDocument.data());
+
+    if (firestoreDocument.exists) {
       store.dispatch({
         type: ActionType.USER_AUTH,
         data: firestoreDocument.data(),
         login_type: 'Google',
-      }); 
+      });
     } else {
-      console.log('Creating New Account For User In Firestore');
       await firebase.app().firestore().collection('users').doc(user.uid).set({
         id: user.uid,
         Token: idToken,
         email: user.email,
-        name: user.displayName,
+        username: user.displayName,
       });
       store.dispatch({
         type: ActionType.USER_AUTH,
@@ -109,24 +93,15 @@ export const GoogleSigninAction = async ({idToken, navigation, toast}) => {
           id: user.uid,
           Token: idToken,
           email: user.email,
-          name: user.displayName,
+          username: user.displayName,
         },
         login_type: 'Google',
-      }); 
+      });
     }
 
-    Success({ navigation, toast });
-    // LoggerAction({
-    //   Method: 'POST',
-    //   ArticalClick: false,
-    //   ArticalID: '',
-    //   ApiName: 'Google Login 🔗',
-    //   APIResponse: 'Success',
-    //   CustomTitle: `${data.username} Login Account With Google`,
-    //   CustomDescription: `${data.username} Login With Google at ${new Date().toString()}. Thanks For Your Time ${data.username} 🙇`,
-    // })
+    Success({navigation, toast});
   } catch (error) {
-    console.log("error",error)
+    console.log('error', error);
     store.dispatch({type: ActionType.LOADING, Loading: false});
   }
 };
@@ -165,18 +140,6 @@ export const GetAccountDetail = async userData => {
         },
       });
       Success({navigation: userData.navigation, toast: userData.toast});
-      LoggerAction({
-        Method: 'POST',
-        ArticalClick: false,
-        ApiName: 'Firebase Email Login 🔗',
-        APIResponse: 'Success',
-        CustomTitle: 'Login With Email And Passowrd',
-        CustomDescription: `${
-          userDoc.data().username
-        } Login Account at ${new Date().toString()}. Thanks For Your Time ${
-          userDoc.data().username
-        } 🙇`,
-      });
     } else {
       Errors({
         error: 'No such user!',

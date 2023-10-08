@@ -6,6 +6,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -82,18 +83,20 @@ function SignInScreen() {
   };
 
   const handleSignIn = () => {
-    const data = {
-      Email: Email,
-      Password: Password,
-    };
-    Signin({data: data, navigation: navigation, toast: toast});
+    try {
+      NetInfo.fetch().then(state => {
+        if (state.isConnected) {
+          const data = {
+            Email: Email,
+            Password: Password,
+          };
+          Signin({data: data, navigation: navigation, toast: toast});
+        }
+      });
+    } catch (error) {
+      showToast('Something went wrong', 'fail');
+    }
   };
-
-  // const handleGoogleSignin = async () => {
-  //   store.dispatch({type: ActionType.LOADING, Loading: true});
-  //   const {idToken} = await GoogleSignin.signIn();
-  //   GoogleSigninAction({idToken: idToken, toast: toast, navigation: navigation});
-  // };
 
   const handleFacebookSignin = () => {
     toast.show('Coming Soon...', {
@@ -105,6 +108,13 @@ function SignInScreen() {
 
   return (
     <View style={[styles.container, {backgroundColor: COLORS.black}]}>
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.black}
+        animated={true}
+        networkActivityIndicatorVisible={true}
+        translucent={true}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
@@ -209,7 +219,7 @@ function SignInScreen() {
 
         <OrView />
 
-        <SocialButtons onFacebookPress={() => handleFacebookSignin()} />
+        <SocialButtons />
 
         <View style={styles.BottomView}>
           <View style={styles.AuthButtonView}>

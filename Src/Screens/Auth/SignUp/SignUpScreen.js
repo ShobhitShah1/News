@@ -5,6 +5,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   Vibration,
@@ -109,32 +110,20 @@ export default function SignUpScreen({navigation}) {
   };
 
   const handleSignup = async () => {
-    const data = {
-      Email: Email,
-      Password: Password,
-      Username: Username,
-    };
-    Signup({data: data, navigation: navigation, toast: toast});
-  };
-
-  // const handleGoogleSignin = () => {
-  //   GoogleSignin.signIn().then(res => {
-  //     const data = {
-  //       username: res.user.name,
-  //       email: res.user.email,
-  //       profile: res.user.photo,
-  //       token: res.idToken,
-  //     };
-  //     GoogleSigninAction({ data: data, toast: toast, navigation: navigation });
-  //   });
-  // };
-
-  const handleFacebookSignin = () => {
-    toast.show('Coming Soon...', {
-      type: 'custom_toast',
-      title: null,
-      status: 'fail',
-    });
+    try {
+      NetInfo.fetch().then(state => {
+        if (state.isConnected) {
+          const data = {
+            Email: Email,
+            Password: Password,
+            Username: Username,
+          };
+          Signup({data: data, navigation: navigation, toast: toast});
+        }
+      });
+    } catch (error) {
+      showToast('Something went wrong', 'fail');
+    }
   };
 
   function hanndleOnOpen() {
@@ -153,6 +142,13 @@ export default function SignUpScreen({navigation}) {
 
   return (
     <View style={[styles.container, {backgroundColor: COLORS.black}]}>
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.black}
+        animated={true}
+        networkActivityIndicatorVisible={true}
+        translucent={true}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled">
@@ -297,7 +293,7 @@ export default function SignUpScreen({navigation}) {
         </KeyboardAvoidingView>
 
         <OrView />
-        <SocialButtons onFacebookPress={() => handleFacebookSignin()} />
+        <SocialButtons />
 
         <View style={styles.AuthButtonView}>
           <AuthButton
