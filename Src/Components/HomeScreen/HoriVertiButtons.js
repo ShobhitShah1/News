@@ -1,7 +1,7 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useCallback} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
-import {COLORS} from '../../Common/Global';
+import {COLORS, SIZES} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 
 const HoriVertiButtons = ({position, setViewPosition}) => {
@@ -35,13 +35,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginHorizontal: normalize(5),
+    
   },
   ButtonIconView: {
     marginLeft: normalize(10),
-    width: normalize(25),
-    height: normalize(25),
+    width: normalize(28),
+    height: normalize(28),
     backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignSelf: 'center',
+    borderRadius: normalize(8)
   },
 });

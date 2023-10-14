@@ -1,6 +1,7 @@
 import * as NetInfo from '@react-native-community/netinfo';
 import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   Dimensions,
   FlatList,
   RefreshControl,
@@ -26,6 +27,7 @@ import {
   GetTopHeadlinesNews,
 } from '../../Services/HomeService';
 import styles from './styles';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
@@ -38,7 +40,7 @@ const HomeScreen = ({navigation}) => {
 
   const [RecentArticles, setRecentArticles] = useState([]);
   const [TopArticales, setTopArticales] = useState([]);
-  const [ViewPosition, setViewPosition] = useState('horizontal');
+  const [ViewPosition, setViewPosition] = useState('vertical');
 
   const [isConnected, setIsConnected] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -136,17 +138,18 @@ const HomeScreen = ({navigation}) => {
           <View style={styles.SearchView}>
             <SearchBox />
           </View>
+
+          <View style={styles.ViewPositionButtonView}>
+            <HoriVertiButtons
+              position={ViewPosition}
+              setViewPosition={setViewPosition}
+            />
+          </View>
+
           {isArticalsLoading ? (
             <NewsLoadingView />
           ) : (
             <React.Fragment>
-              <View style={styles.ViewPositionButtonView}>
-                <HoriVertiButtons
-                  position={ViewPosition}
-                  setViewPosition={setViewPosition}
-                />
-              </View>
-
               <View style={styles.NewsContainer}>
                 <View style={styles.NewsWrapper}>
                   <RenderHeaderTitle title="Recent Articals" />
@@ -221,7 +224,13 @@ const HomeScreen = ({navigation}) => {
         </View>
       </ScrollView>
 
-      <FlotingButton />
+      <FlotingButton
+        onPress={() => {
+          Alert.alert('Hello', 'close');
+          const isEnabled = crashlytics().isCrashlyticsCollectionEnabled;
+          console.log('isEnabled', isEnabled);
+        }}
+      />
     </React.Fragment>
   );
 };

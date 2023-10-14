@@ -5,6 +5,7 @@ const {width, height} = Dimensions.get('window');
 
 export const COLORS = {
   primary: 'rgba(164, 99, 77, 1)',
+  Loader: 'rgba(164, 99, 77, 0.7)',
   SearchBox: 'rgba(31,34,42,255)',
   SearchText: 'rgba(110,111,113,255)',
   secondary: '#5D2DFD',

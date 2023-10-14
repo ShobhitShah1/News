@@ -15,7 +15,7 @@ const NewsLoadingView = () => {
           <View key={index} style={styles.ArticalView}>
             <View style={{marginVertical: normalize(10)}}>
               <SkeletonPlaceholder
-                backgroundColor={COLORS.primary}
+                backgroundColor={COLORS.Loader}
                 highlightColor={COLORS.white}
                 borderRadius={SIZES.radius}>
                 <SkeletonPlaceholder.Item width={90} height={20} />
@@ -34,7 +34,7 @@ const NewsLoadingView = () => {
                     <SkeletonPlaceholder
                       enabled
                       speed={800}
-                      backgroundColor={COLORS.primary}
+                      backgroundColor={COLORS.Loader}
                       highlightColor={COLORS.white}
                       borderRadius={SIZES.radius}>
                       <SkeletonPlaceholder.Item alignItems="center">
@@ -59,7 +59,7 @@ const NewsLoadingView = () => {
 const styles = StyleSheet.create({
   LetestNewsTitleView: {
     width: '100%',
-    marginVertical: normalize(20),
+    marginVertical: normalize(5),
   },
   ArticalView: {
     marginVertical: normalize(10),
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   SectionTitleText: {
     fontSize: normalize(15),
-    color: COLORS.primary,
+    color: COLORS.Loader,
     fontFamily: FAMILY.PoppinsMedium,
   },
 });
