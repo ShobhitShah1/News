@@ -1,24 +1,11 @@
-import {
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import React, {useState} from 'react';
-import {
-  COLORS,
-  DimensionsSize,
-  FAMILY,
-  FONTS,
-  SIZES,
-} from '../../Common/Global';
-import {normalize} from '../../Common/GlobalSize';
+import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import Images from '../../Common/Images';
 import Feather from 'react-native-vector-icons/Feather';
+import {COLORS, DimensionsSize, FAMILY, SIZES} from '../../Common/Global';
+import {normalize} from '../../Common/GlobalSize';
+import Images from '../../Common/Images';
 
 const RenderHomeNews = props => {
   const {data, key, ViewPosition} = props;

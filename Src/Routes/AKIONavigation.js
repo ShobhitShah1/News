@@ -1,19 +1,19 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 //* Screens
 import SignInScreen from '../Screens/Auth/SignIn/SignInScreen';
 import SignUpScreen from '../Screens/Auth/SignUp/SignUpScreen';
 import SplashScreen from '../Screens/Splash/SplashScreen';
 import BottomSheet from './BottomSheet';
-import NetworkStatusListener from '../Components/InternetServices/NetworkStatusListener'; 
+import NetworkStatusListener from '../Components/InternetServices/NetworkStatusListener';
+import CreateArtical from '../Screens/Create/CreateArtical';
 
 const Stack = createNativeStackNavigator();
 
 export default function AKIONavigation() {
-
   const AuthStack = () => {
     return (
       <Stack.Navigator
@@ -35,7 +35,8 @@ export default function AKIONavigation() {
         }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Auth" component={AuthStack} />
-        <Stack.Screen name="BottomSheet" component={BottomSheet} /> 
+        <Stack.Screen name="BottomSheet" component={BottomSheet} />
+        <Stack.Screen name="CreateArtical" component={CreateArtical} />
       </Stack.Navigator>
       <NetworkStatusListener />
     </NavigationContainer>

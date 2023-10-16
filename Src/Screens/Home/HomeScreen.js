@@ -226,9 +226,7 @@ const HomeScreen = ({navigation}) => {
 
       <FlotingButton
         onPress={() => {
-          Alert.alert('Hello', 'close');
-          const isEnabled = crashlytics().isCrashlyticsCollectionEnabled;
-          console.log('isEnabled', isEnabled);
+          navigation.navigate('CreateArtical');
         }}
       />
     </React.Fragment>
