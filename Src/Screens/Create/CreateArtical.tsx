@@ -1,29 +1,22 @@
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
+import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import React, {FC, useMemo, useRef, useState} from 'react';
 import {Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonStyles from '../../Common/CommonStyles';
 import {COLORS} from '../../Common/Global';
-import styles from './styles';
 import {normalize} from '../../Common/GlobalSize';
-import BottomSheet, {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from '@gorhom/bottom-sheet';
 import VisiblityButtonsView from '../../Components/CreateArticals/VisiblityButtonsView';
+import styles from './styles';
 
 const CreateArtical: FC = () => {
-  const SheetRef = useRef<BottomSheet>(null);
+  const SheetRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['30%'], []);
 
   const [ArticalText, setArticalText] = useState<String>('');
-  const [isArticalPublica, setisArticalPublica] = useState<boolean>(false)
+  const [isArticalPublica, setisArticalPublica] = useState<boolean>(false);
 
   const hanndleOnOpen = () => {
     SheetRef.current?.present();
-  };
-
-  const onClose = () => {
-    SheetRef.current?.close();
   };
 
   return (
@@ -42,10 +35,12 @@ const CreateArtical: FC = () => {
             <TouchableOpacity
               style={styles.VisibilityButton}
               onPress={() => {
-                Keyboard.dismiss()
+                Keyboard.dismiss();
                 hanndleOnOpen();
               }}>
-              <Text style={styles.VisibilityText}>{isArticalPublica ? 'Public' : 'Private'}</Text>
+              <Text style={styles.VisibilityText}>
+                {isArticalPublica ? 'Public' : 'Private'}
+              </Text>
               <AntDesign name="caretdown" color={COLORS.primary} />
             </TouchableOpacity>
           </View>
@@ -97,8 +92,11 @@ const CreateArtical: FC = () => {
             containerStyle={{
               backgroundColor: 'rgba(0,0,0,0.5)',
             }}>
-              <VisiblityButtonsView visibilityStatus={isArticalPublica} />
-            </BottomSheetModal>
+            <VisiblityButtonsView
+              isArticalPublica={isArticalPublica}
+              setisArticalPublica={setisArticalPublica}
+            />
+          </BottomSheetModal>
         </BottomSheetModalProvider>
       </View>
     </View>
