@@ -1,33 +1,48 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {COLORS, SIZES, FONTS, Opacity} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
-import {COLORS} from '../../Common/Global';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Feather from 'react-native-vector-icons/Feather';
 
 interface ButtonUIProps {
   name: string;
-  description: string;
   onButtonPress: () => void;
   containerStyle: object;
-  textStyle: object;
-  fillViewStyle: object;
+  isFocused: Boolean;
 }
 
 const VisibleButtonUI: React.FC<ButtonUIProps> = ({
   name,
   onButtonPress,
   containerStyle,
-  textStyle,
-  fillViewStyle,
-  description
+  isFocused,
 }) => {
   return (
-    <TouchableOpacity style={containerStyle} onPress={onButtonPress}>
+    <TouchableOpacity
+      style={containerStyle}
+      activeOpacity={Opacity.ActiveOpacity}
+      onPress={onButtonPress}>
       <View style={styles.FlexView}>
-        <View style={{...styles.FillView, ...fillViewStyle}} />
+        <View style={styles.IconView}>
+          <MaterialIcons
+            name={name === 'Public' ? 'public' : 'lock'}
+            color={COLORS.white}
+            size={normalize(25)}
+            style={styles.Icon}
+          />
+          {isFocused && (
+            <Feather
+              name="check-circle"
+              color={COLORS.white}
+              size={normalize(15)}
+              style={styles.CheckMark}
+            />
+          )}
+        </View>
 
-        <View style={{margin: normalize(10)}}>
-          <Text style={textStyle}>{name}</Text>
-          <Text numberOfLines={1} style={textStyle}>{description}</Text>
+        <View style={styles.NameView}>
+          <Text style={styles.TextStyle}>{name}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -40,13 +55,31 @@ const styles = StyleSheet.create({
   FlexView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: normalize(10)
+    marginHorizontal: normalize(25),
   },
-  FillView: {
-    width: normalize(18),
-    height: normalize(18),
-    borderWidth: normalize(2),
-    borderColor: COLORS.primary,
-    borderRadius: normalize(50)
+  IconView: {
+    width: normalize(40),
+    height: normalize(40),
+    borderRadius: SIZES.radius,
+    justifyContent: 'center',
+    backgroundColor: COLORS.SearchBox,
+  },
+  Icon: {
+    alignSelf: 'center',
+  },
+  TextStyle: {
+    ...FONTS.h3,
+    color: COLORS.white,
+  },
+  NameView: {
+    margin: normalize(10),
+    marginLeft: normalize(13),
+  },
+  CheckMark: {
+    position: 'absolute',
+    bottom: -5,
+    right: -5,
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {COLORS, FONTS, SIZES} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import VisibleButtonUI from './VisibleButtonUI';
@@ -16,44 +16,20 @@ const VisiblityButtonsView: React.FC<VisibilityButtonsProps> = ({
 }) => {
   return (
     <View style={styles.Container}>
-      <VisibleButtonUI 
+      <View style={styles.TitleView}>
+        <Text style={styles.Title}>Choose audience</Text>
+      </View>
+
+      <VisibleButtonUI
         name={'Public'}
-        description={"It can be seen by everyone."}
-        textStyle={{
-          ...FONTS.h4,
-          color: isArticalPublica ? 'white' : COLORS.primary,
-        }}
-        fillViewStyle={{
-          borderColor: isArticalPublica ? COLORS.white : COLORS.primary,
-          backgroundColor:  isArticalPublica ? COLORS.white :'transparent',
-        }}
-        containerStyle={[
-          styles.ButtonStyle,
-          {
-            backgroundColor: isArticalPublica ? COLORS.primary : 'transparent',
-            borderColor: isArticalPublica ? 'transparent' : COLORS.primary,
-          },
-        ]}
+        isFocused={isArticalPublica ? true : false}
+        containerStyle={[styles.ButtonStyle]}
         onButtonPress={() => setisArticalPublica(true)}
       />
-      <VisibleButtonUI 
+      <VisibleButtonUI
         name={'Private'}
-        description={"It is only visible to you"}
-        textStyle={{
-          ...FONTS.h4,
-          color: isArticalPublica ? COLORS.primary : 'white',
-        }}
-        fillViewStyle={{
-          borderColor: isArticalPublica ? COLORS.primary : COLORS.white,
-          backgroundColor:isArticalPublica ? 'transparent' : COLORS.white,
-        }}
-        containerStyle={[
-          styles.ButtonStyle,
-          {
-            backgroundColor: isArticalPublica ? 'transparent' : COLORS.primary,
-            borderColor: isArticalPublica ? COLORS.primary : 'transparent',
-          },
-        ]}
+        isFocused={isArticalPublica ? false : true}
+        containerStyle={[styles.ButtonStyle]}
         onButtonPress={() => setisArticalPublica(false)}
       />
     </View>
@@ -65,14 +41,22 @@ export default VisiblityButtonsView;
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
+  },
+  TitleView: {
+    alignSelf: 'center',
+    marginVertical: normalize(18),
     justifyContent: 'center',
+  },
+  Title: {
+    ...FONTS.h2,
+    color: COLORS.white,
   },
   ButtonStyle: {
     alignSelf: 'center',
-    height: normalize(50),
-    width: width - normalize(50),
+    height: normalize(55),
+    width: width + normalize(10),
     marginVertical: normalize(10),
     borderRadius: SIZES.subRedius,
-    borderWidth: normalize(2),
+    borderBottomWidth: normalize(2),
   },
 });

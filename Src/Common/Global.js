@@ -123,8 +123,10 @@ export const FAMILY = {
   PoppinsMedium: 'Poppins-Medium',
   OutfitBold: 'Outfit-Bold',
   OutfitRegular: 'Outfit-Regular',
-  OutfitMedium: 'Outfit-Medium', 
+  OutfitMedium: 'Outfit-Medium',
 };
+
+export const Opacity = {ActiveOpacity: 0.8};
 
 export const DimensionsSize = {
   width: width,
@@ -135,6 +137,14 @@ export const ImageURL = {
   random: 'https://picsum.photos/500',
 };
 
-const Global = {COLORS, SIZES, FONTS, FAMILY, DimensionsSize, ImageURL};
+const Global = {
+  COLORS,
+  SIZES,
+  FONTS,
+  FAMILY,
+  DimensionsSize,
+  ImageURL,
+  Opacity,
+};
 
 export default Global;

@@ -1,22 +1,73 @@
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import React, {FC, useMemo, useRef, useState} from 'react';
-import {Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {FC, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  Alert,
+  BackHandler,
+  Keyboard,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonStyles from '../../Common/CommonStyles';
-import {COLORS} from '../../Common/Global';
+import {COLORS, Opacity} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import VisiblityButtonsView from '../../Components/CreateArticals/VisiblityButtonsView';
 import styles from './styles';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateArtical: FC = () => {
   const SheetRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['30%'], []);
-
-  const [ArticalText, setArticalText] = useState<String>('');
+  const snapPoints = useMemo(() => ['37%'], []);
+  const navigation = useNavigation();
+  const [ArticalText, setArticalText] = useState<string>('');
   const [isArticalPublica, setisArticalPublica] = useState<boolean>(false);
 
   const hanndleOnOpen = () => {
     SheetRef.current?.present();
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (ArticalText.length !== 0) {
+          Alert.alert(
+            'Unsaved Changes',
+            'Are you sure you want to leave without saving your article?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => null,
+                style: 'cancel',
+              },
+              {
+                text: 'Yes',
+                onPress: () => {
+                  navigation.goBack();
+                  return true;
+                },
+              },
+            ],
+          );
+          return true;
+        }
+        return false;
+      },
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [ArticalText, navigation]);
+
+  const handleCloseClick = () => {
+    if (ArticalText.length !== 0) {
+      Alert.alert('You have unsave things', 'cant go back sorry');
+    } else {
+      navigation.goBack();
+    }
   };
 
   return (
@@ -24,15 +75,19 @@ const CreateArtical: FC = () => {
       <View style={styles.createContainer}>
         <View style={styles.headerView}>
           <View style={styles.VisibilityView}>
-            <View style={styles.CloseButtonView}>
+            <TouchableOpacity
+              onPress={handleCloseClick}
+              activeOpacity={Opacity.ActiveOpacity}
+              style={styles.CloseButtonView}>
               <AntDesign
                 style={{alignSelf: 'center'}}
                 name="close"
                 size={normalize(20)}
                 color={COLORS.white}
               />
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity
+              activeOpacity={Opacity.ActiveOpacity}
               style={styles.VisibilityButton}
               onPress={() => {
                 Keyboard.dismiss();
@@ -47,6 +102,7 @@ const CreateArtical: FC = () => {
 
           <TouchableOpacity
             onPress={() => {}}
+            activeOpacity={Opacity.ActiveOpacity}
             style={[styles.PostButton, {backgroundColor: COLORS.primary}]}>
             <Text style={styles.PostButtonText}>Post</Text>
           </TouchableOpacity>
@@ -68,7 +124,7 @@ const CreateArtical: FC = () => {
         />
 
         <View style={styles.TotalWordTextView}>
-          <TouchableOpacity>
+          <TouchableOpacity activeOpacity={Opacity.ActiveOpacity}>
             <AntDesign
               style={{alignSelf: 'center'}}
               name="setting"
