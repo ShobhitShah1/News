@@ -19,11 +19,3 @@ AKIO is a modern and feature-rich news app that delivers the latest news, storie
 - **Offline Reading:** Read news even when you're offline, ensuring you never miss a headline.
 
 - **Cross-Platform:** AKIO is available on Android and iOS, providing a seamless experience on your mobile devices.
-
-## AdMob ID's
-
-## app ID:
-**ca-app-pub-1572023976353510~5083638461**
-
-## You'll specify ad type, size, and placement when you integrate the code using this ad unit ID:
-**ca-app-pub-1572023976353510/3368652992**
