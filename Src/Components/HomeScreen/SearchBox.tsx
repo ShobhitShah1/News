@@ -1,12 +1,16 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import * as Icon from 'react-native-vector-icons/Fontisto';
 import {COLORS, FAMILY, SIZES} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
-import * as Icon from 'react-native-vector-icons/Fontisto';
 
-const SearchBox = ({placeholder, Search, setSearch}) => {
-  const navigation = useNavigation();
+interface SearchProps {
+  placeholder?: string;
+  Search?: string;
+  setSearch?: boolean;
+}
+
+const SearchBox: FC<SearchProps> = ({placeholder, Search, setSearch}) => {
   return (
     <TouchableOpacity
       activeOpacity={1}

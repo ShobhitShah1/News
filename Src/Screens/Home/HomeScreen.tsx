@@ -1,7 +1,6 @@
 import * as NetInfo from '@react-native-community/netinfo';
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
-  Alert,
   Dimensions,
   FlatList,
   RefreshControl,
@@ -27,26 +26,26 @@ import {
   GetTopHeadlinesNews,
 } from '../../Services/HomeService';
 import styles from './styles';
-import crashlytics from '@react-native-firebase/crashlytics';
+import {useNavigation} from '@react-navigation/native';
 
 const {width: viewportWidth, height: viewportHeight} = Dimensions.get('window');
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen: FC = () => {
   const toast = useToast();
-  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const userData = useSelector(state => state.auth.user);
   const userName = userData?.username ? userData?.username : userData?.name;
 
-  const [RecentArticles, setRecentArticles] = useState([]);
-  const [TopArticales, setTopArticales] = useState([]);
-  const [ViewPosition, setViewPosition] = useState('vertical');
+  const [RecentArticles, setRecentArticles] = useState<object>([]);
+  const [TopArticales, setTopArticales] = useState<object>([]);
+  const [ViewPosition, setViewPosition] = useState<string>('vertical');
 
-  const [isConnected, setIsConnected] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [isArticalsLoading, setisArticalsLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [isArticalsLoading, setisArticalsLoading] = useState<boolean>(false);
 
-  const showToast = (message, status) => {
+  const showToast = (message: string, status: string) => {
     toast.show(message, {
       type: 'custom_toast',
       title: 'Error',
@@ -109,10 +108,10 @@ const HomeScreen = ({navigation}) => {
     }
   }, [isConnected]);
 
-  const RenderHeaderTitle = item => {
+  function RenderHeaderTitle(title: string) {
     return (
       <View style={styles.SectionTitleView}>
-        <Text style={styles.SectionTitleText}>{item.title}</Text>
+        <Text style={styles.SectionTitleText}>{title.title}</Text>
         <Feather
           name="arrow-right"
           color={COLORS.primary}
@@ -120,7 +119,7 @@ const HomeScreen = ({navigation}) => {
         />
       </View>
     );
-  };
+  }
 
   return (
     <React.Fragment>

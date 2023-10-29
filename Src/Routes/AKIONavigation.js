@@ -10,6 +10,7 @@ import SplashScreen from '../Screens/Splash/SplashScreen';
 import BottomSheet from './BottomSheet';
 import NetworkStatusListener from '../Components/InternetServices/NetworkStatusListener';
 import CreateArtical from '../Screens/Create/CreateArtical';
+import { COLORS } from '../Common/Global';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,11 @@ export default function AKIONavigation() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          gestureDirection: 'horizontal',
+          animation: 'slide_from_bottom',
+          animationTypeForReplace: 'push',
+          statusBarAnimation: 'slide',
+          // navigationBarColor: COLORS.black,
         }}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Auth" component={AuthStack} />

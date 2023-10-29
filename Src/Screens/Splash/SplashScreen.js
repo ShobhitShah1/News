@@ -1,17 +1,8 @@
-import React, {useEffect, useRef} from 'react';
-import {
-  Dimensions,
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {COLORS, FONTS} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
-import Images from '../../Common/Images';
-import auth from '@react-native-firebase/auth';
-import {useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
 export default function SplashScreen({navigation}) {

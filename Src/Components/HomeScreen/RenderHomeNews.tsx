@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -7,8 +7,13 @@ import {COLORS, DimensionsSize, FAMILY, SIZES} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import Images from '../../Common/Images';
 
-const RenderHomeNews = props => {
-  const {data, key, ViewPosition} = props;
+interface RenderHomeProps {
+  data: object;
+  ViewPosition: string;
+}
+
+const RenderHomeNews: FC<RenderHomeProps> = ({data, ViewPosition}) => {
+  // const {data, key, ViewPosition} = props;
   const Image = data.item.urlToImage
     ? {
         uri: data.item.urlToImage,

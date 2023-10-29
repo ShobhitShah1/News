@@ -88,6 +88,36 @@ const styles = StyleSheet.create({
   },
   contentContainer:{
     backgroundColor: COLORS.tinBlack
+  },
+  ImageContainerView:{
+    justifyContent:'center',
+    alignSelf:'center',
+    borderColor: COLORS.white,
+    borderWidth: normalize(2),
+    borderRadius: normalize(10),
+    borderStyle: 'dotted',
+    width: '95%',
+    height: normalize(150),
+    marginVertical: normalize(10)
+  },
+  NoImageContainerView:{
+    margin: normalize(5),
+    justifyContent:'center',
+    alignSelf:'center',
+  },
+  UploadImageIcon:{
+    justifyContent:'center',
+    alignSelf:'center',
+  },
+  UplaodImage:{
+    width: '100%',
+    height: '100%',
+    borderRadius: normalize(10),
+  },
+  UplaodImageText:{
+    ...FONTS.h3,
+    textAlign:'center',
+    color: COLORS.white
   }
 });
 

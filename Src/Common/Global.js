@@ -66,51 +66,51 @@ export const SIZES = {
 };
 export const FONTS = {
   h1: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: FAMILY.PoppinsBold,
     fontSize: SIZES.h1,
     lineHeight: 36,
     color: COLORS.black,
   },
   h2: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: FAMILY.PoppinsBold,
     fontSize: SIZES.h2,
     lineHeight: 30,
   },
   h3: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: FAMILY.PoppinsBold,
     fontSize: SIZES.h3,
     lineHeight: 22,
   },
   h4: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: FAMILY.PoppinsBold,
     fontSize: SIZES.h4,
     lineHeight: 22,
   },
   body1: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: FAMILY.PoppinsRegular,
     fontSize: SIZES.body1,
     lineHeight: 36,
     color: COLORS.black,
   },
   body2: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: FAMILY.PoppinsRegular,
     fontSize: SIZES.body2,
     lineHeight: 30,
     color: COLORS.black,
   },
   body3: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: FAMILY.PoppinsRegular,
     fontSize: SIZES.body3,
     lineHeight: 22,
   },
   body4: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: FAMILY.PoppinsRegular,
     fontSize: SIZES.body4,
     lineHeight: 22,
     color: COLORS.black,
   },
   body5: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: FAMILY.PoppinsRegular,
     fontSize: SIZES.body5,
     lineHeight: 22,
     color: COLORS.black,
