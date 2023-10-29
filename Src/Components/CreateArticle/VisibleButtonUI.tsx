@@ -20,18 +20,18 @@ const VisibleButtonUI: React.FC<ButtonUIProps> = ({
   containerStyle,
 }) => {
   return (
-    <LinearGradient
-      colors={
-        isFocused ? [COLORS.red, 'transparent'] : ['transparent', 'transparent']
-      }
-      start={{
-        x: 0,
-        y: 5,
-      }}
-      end={{
-        x: 0,
-        y: 0,
-      }} style={{borderRadius: normalize(10), marginVertical: normalize(10)}}>
+    // <LinearGradient
+    //   colors={
+    //     isFocused ? [COLORS.red, 'transparent'] : ['transparent', 'transparent']
+    //   }
+    //   start={{
+    //     x: 0,
+    //     y: 5,
+    //   }}
+    //   end={{
+    //     x: 0,
+    //     y: 0,
+    //   }} style={{borderRadius: normalize(10), marginVertical: normalize(10)}}>
       <TouchableOpacity
         style={containerStyle}
         activeOpacity={Opacity.ActiveOpacity}
@@ -55,11 +55,11 @@ const VisibleButtonUI: React.FC<ButtonUIProps> = ({
           </View>
 
           <View style={styles.NameView}>
-            <Text style={styles.TextStyle}>{name}</Text>
+            <Text style={[styles.TextStyle,{borderBottomWidth: isFocused ? normalize(3) : 0}]}>{name}</Text>
           </View>
         </View>
       </TouchableOpacity>
-    </LinearGradient>
+    // </LinearGradient>
   );
 };
 
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: normalize(25),
   },
   IconView: {
-    margin: normalize(10),
+    margin: normalize(5),
     justifyContent: 'center',
     borderRadius: SIZES.radius,
   },
@@ -82,6 +82,8 @@ const styles = StyleSheet.create({
   TextStyle: {
     ...FONTS.h3,
     color: COLORS.white,
+    lineHeight: normalize(25),
+    borderBottomColor: COLORS.white
   },
   NameView: {
     // margin: normalize(10),

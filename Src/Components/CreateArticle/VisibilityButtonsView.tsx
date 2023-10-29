@@ -4,16 +4,19 @@ import LinearGradient from 'react-native-linear-gradient';
 import {COLORS, FONTS} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
 import VisibleButtonUI from './VisibleButtonUI';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 interface VisibilityButtonsProps {
-  isArticalPublica: boolean;
-  setisArticalPublica: React.Dispatch<React.SetStateAction<boolean>>;
+  Ref: React.RefObject<BottomSheetModal>;
+  isArticlePublic: boolean;
+  setisArticlePublic?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const VisiblityButtonsView: React.FC<VisibilityButtonsProps> = ({
-  isArticalPublica,
-  setisArticalPublica,
+const VisibilityButtonsView: React.FC<VisibilityButtonsProps> = ({
+  Ref,
+  isArticlePublic, 
 }) => {
+  const close = () => Ref.current && Ref.current.close();
   return (
     <LinearGradient
       start={{
@@ -33,26 +36,22 @@ const VisiblityButtonsView: React.FC<VisibilityButtonsProps> = ({
       <View style={styles.FlexView}>
         <VisibleButtonUI
           name={'Public'}
-          isFocused={isArticalPublica ? true : false}
-          containerStyle={
-            isArticalPublica ? styles.FocusButtonStyle : styles.ButtonStyle
-          }
-          onButtonPress={() => setisArticalPublica(true)}
+          isFocused={isArticlePublic ? true : false}
+          containerStyle={styles.ButtonStyle}
+          onButtonPress={() => close()}
         />
         <VisibleButtonUI
           name={'Private'}
-          isFocused={isArticalPublica ? false : true}
-          containerStyle={
-            !isArticalPublica ? styles.FocusButtonStyle : styles.ButtonStyle
-          }
-          onButtonPress={() => setisArticalPublica(false)}
+          isFocused={isArticlePublic ? false : true}
+          containerStyle={styles.ButtonStyle}
+          onButtonPress={() => close()}
         />
       </View>
     </LinearGradient>
   );
 };
 
-export default VisiblityButtonsView;
+export default VisibilityButtonsView;
 
 const styles = StyleSheet.create({
   Container: {
@@ -72,12 +71,11 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   FocusButtonStyle: {
-    // flex: 1,
     width: normalize(120),
     height: normalize(100),
     justifyContent: 'center',
     borderRadius: normalize(10),
-    // backgroundColor: COLORS.primary,
+    marginVertical: normalize(10),
     marginHorizontal: normalize(10),
   },
   ButtonStyle: {

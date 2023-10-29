@@ -30,13 +30,6 @@ export default function BottomSheet() {
         options={{
           tabBarIcon: ({focused}) => {
             return <BottomHome focused={focused} />;
-            // return (
-            //   <BottomTabIcon
-            //     focused={focused}
-            //     icon={Icons.HomeWhite}
-            //     label="Home"
-            //   />
-            // );
           },
           tabBarShowLabel: false,
         }}
@@ -47,13 +40,6 @@ export default function BottomSheet() {
         options={{
           tabBarIcon: ({focused}) => {
             return <BottomProfile focused={focused} />;
-            // return (
-            //   <BottomTabIcon
-            //     focused={focused}
-            //     icon={Icons.ProfileWhite}
-            //     label="Profile"
-            //   />
-            // );
           },
           tabBarShowLabel: false,
         }}

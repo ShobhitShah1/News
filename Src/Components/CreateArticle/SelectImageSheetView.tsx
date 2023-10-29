@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   TitleView: {
     alignSelf: 'center',
-    marginVertical: normalize(18),
+    marginTop: normalize(18),
     justifyContent: 'center',
   },
   Title: {

@@ -1,14 +1,18 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import React, {FC} from 'react';
 import {normalize} from '../../Common/GlobalSize';
 import {COLORS, SIZES} from '../../Common/Global';
 import * as Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
 
-const FlotingButton = ({onPress}) => {
+const FloatingButton: FC = () => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       activeOpacity={1}
-      onPress={onPress}
+      onPress={() => {
+        navigation.navigate('CreateArticle');
+      }}
       style={styles.ButtonContainer}>
       <Icon.default
         name="text-box-plus-outline"
@@ -20,7 +24,7 @@ const FlotingButton = ({onPress}) => {
   );
 };
 
-export default FlotingButton;
+export default FloatingButton;
 
 const styles = StyleSheet.create({
   ButtonContainer: {

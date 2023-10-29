@@ -6,12 +6,10 @@ import {normalize} from '../../Common/GlobalSize';
 const {width, height} = Dimensions.get('window');
 
 export default function SplashScreen({navigation}) {
-  const Status = useSelector(state => state?.auth?.user);
+  const Status = useSelector(state => state?.auth.user);
 
   useEffect(() => {
-    console.log(
-      '======================== 👋 UserInfo 🚀 =======================',
-    );
+    console.log('============== 👋 UserInfo 🚀 =============');
     console.log('Status', Status);
     const timeout = setTimeout(() => {
       if (Status !== null && Status !== undefined) {
@@ -20,7 +18,6 @@ export default function SplashScreen({navigation}) {
         navigation.replace('Auth', {screen: 'AuthHome'});
       }
     }, 2000);
-
     return () => clearTimeout(timeout);
   }, [Status, navigation]);
 
@@ -53,6 +50,7 @@ const styles = StyleSheet.create({
   ImageView: {
     justifyContent: 'center',
     alignSelf: 'center',
+    width: width - normalize(20),
   },
   splashImage: {
     width: normalize(250),

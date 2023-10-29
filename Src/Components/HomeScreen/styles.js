@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
     height: normalize(100),
     // height: normalize(140),
     backgroundColor: COLORS.primary,
-    borderBottomLeftRadius: SIZES.subRedius,
-    borderBottomRightRadius: SIZES.subRedius,
+    borderBottomLeftRadius: SIZES.subRadius,
+    borderBottomRightRadius: SIZES.subRadius,
   },
   mainFlex: {
     width: '100%',
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     height: normalize(40),
     justifyContent: 'center',
     marginRight: normalize(5),
-    borderRadius: SIZES.subRedius,
+    borderRadius: SIZES.subRadius,
     marginHorizontal: normalize(3),
     backgroundColor: COLORS.NotificationButton,
   },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     width: normalize(25),
     height: normalize(25),
     justifyContent: 'center',
-    borderRadius: SIZES.subRedius,
+    borderRadius: SIZES.subRadius,
   },
   InviteDotView: {
     flexDirection: 'row',

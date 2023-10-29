@@ -23,12 +23,13 @@ const useCameraAndGalleryPermission = () => {
       const cameraPermission = await check(cameraPermissionName);
       const galleryPermission = await check(galleryPermissionName);
       if (
-        cameraPermission === RESULTS.GRANTED &&
-        galleryPermission === RESULTS.GRANTED
+        cameraPermission === RESULTS.GRANTED
+        // &&  galleryPermission === RESULTS.GRANTED
       ) {
         setStatus(RESULTS.GRANTED);
       } else {
         setStatus(RESULTS.DENIED);
+        // Linking.openSettings();
       }
     };
 
@@ -39,15 +40,14 @@ const useCameraAndGalleryPermission = () => {
     const cameraPermission = await request(cameraPermissionName);
     const galleryPermission = await request(galleryPermissionName);
 
-    console.log('cameraPermission', cameraPermission);
-    console.log('galleryPermission', galleryPermission);
     if (
-      cameraPermission === RESULTS.GRANTED &&
-      galleryPermission === RESULTS.GRANTED
+      cameraPermission === RESULTS.GRANTED
+      // &&  galleryPermission === RESULTS.GRANTED
     ) {
       setStatus(RESULTS.GRANTED);
     } else {
       setStatus(RESULTS.DENIED);
+      Linking.openSettings();
     }
   };
 
