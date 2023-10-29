@@ -4,19 +4,46 @@ import {COLORS, FAMILY, FONTS, SIZES, DimensionsSize} from '../Global';
 import {normalize} from '../GlobalSize';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'; //facebook
 import AntDesign from 'react-native-vector-icons/AntDesign'; //Google witter
+import {GoogleSigninAction} from '../../Redux/Actions/AuthAction';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {store} from '../../Redux/Store/Store';
+import {useToast} from 'react-native-toast-notifications';
+import {useNavigation} from '@react-navigation/native';
+import * as ActionType from '../../Redux/Actions/ActionType';
 
-const SocialButtons = ({onGooglePress, onFacebookPress}) => {
+const SocialButtons = () => {
+  const navigation = useNavigation();
+  const toast = useToast();
+
+  const onGooglePress = async () => {
+    store.dispatch({type: ActionType.LOADING, Loading: true});
+    const {idToken} = await GoogleSignin.signIn();
+    GoogleSigninAction({
+      idToken: idToken,
+      toast: toast,
+      navigation: navigation,
+    });
+  };
+
+  const onFacebookPress = async () => {
+    toast.show('Coming Soon...', {
+      type: 'custom_toast',
+      title: null,
+      status: 'fail',
+    });
+  };
+
   return (
     <Animated.View style={styles.container}>
       <Animated.View style={styles.flexView}>
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onGooglePress}>
+          onPress={() => onGooglePress()}>
           <AntDesign
             name="google"
             size={20}
-            color={COLORS.google}
+            color={COLORS.primary}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -24,18 +51,26 @@ const SocialButtons = ({onGooglePress, onFacebookPress}) => {
         <TouchableOpacity
           style={styles.ButtonView}
           activeOpacity={0.7}
-          onPress={onFacebookPress}>
+          onPress={() => onFacebookPress()}>
           <FontAwesome
             name="facebook"
             size={20}
-            color={COLORS.facebook}
+            color={COLORS.primary}
             style={styles.icon}
           />
         </TouchableOpacity>
 
-        {/* <TouchableOpacity style={styles.ButtonView} activeOpacity={0.7} onPress={onPress}>
-                    <AntDesign name='twitter' size={20} color={COLORS.twitter} style={styles.icon} />
-                </TouchableOpacity> */}
+        {/* <TouchableOpacity
+          style={styles.ButtonView}
+          activeOpacity={0.7}
+          onPress={onPress}>
+          <AntDesign
+            name="twitter"
+            size={20}
+            color={COLORS.twitter}
+            style={styles.icon}
+          />
+        </TouchableOpacity> */}
       </Animated.View>
     </Animated.View>
   );

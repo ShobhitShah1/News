@@ -4,9 +4,11 @@ import {normalize} from './GlobalSize';
 const {width, height} = Dimensions.get('window');
 
 export const COLORS = {
-  primary: '#171717',
+  primary: 'rgba(164, 99, 77, 1)',
+  Loader: 'rgba(164, 99, 77, 0.7)',
+  SearchBox: 'rgba(31,34,42,255)',
+  SearchText: 'rgba(110,111,113,255)',
   secondary: '#5D2DFD',
-
   white: '#fff',
   textInputBackground: '#f5f7fc',
   textInputBorder: '#cad6fa',
@@ -17,11 +19,9 @@ export const COLORS = {
   google: '#4285F4',
   twitter: '#00acee',
   tinBlack: '#1e1d2e',
-  pagginColor: '#505062',
   skipBTN: '#404855',
-  black: '#1c1c1c',
+  black: '#111111',
   green: '#37E39F',
-  // red: '#F9A8BA',
   gray: '#6A6A6A',
   lightGray: '#dbdbdb',
   lightGray1: '#f5f6fa',
@@ -37,11 +37,10 @@ export const COLORS = {
   taskView: '#f8f9fd',
 };
 export const SIZES = {
-  // global sizes
   base: normalize(8),
   font: normalize(14),
   radius: normalize(12),
-  subRedius: normalize(20),
+  subRadius: normalize(20),
   padding: normalize(24),
   bottombaricon: normalize(25),
   size10: normalize(10),
@@ -80,13 +79,11 @@ export const FONTS = {
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.h3,
     lineHeight: 22,
-    // color: COLORS.black,
   },
   h4: {
     fontFamily: 'Poppins-Bold',
     fontSize: SIZES.h4,
     lineHeight: 22,
-    // color: COLORS.black,
   },
   body1: {
     fontFamily: 'Poppins-Regular',
@@ -104,7 +101,6 @@ export const FONTS = {
     fontFamily: 'Poppins-Regular',
     fontSize: SIZES.body3,
     lineHeight: 22,
-    // color: COLORS.black,
   },
   body4: {
     fontFamily: 'Poppins-Regular',
@@ -123,7 +119,13 @@ export const FONTS = {
 export const FAMILY = {
   PoppinsBold: 'Poppins-Bold',
   PoppinsRegular: 'Poppins-Regular',
+  PoppinsMedium: 'Poppins-Medium',
+  OutfitBold: 'Outfit-Bold',
+  OutfitRegular: 'Outfit-Regular',
+  OutfitMedium: 'Outfit-Medium',
 };
+
+export const Opacity = {ActiveOpacity: 0.8};
 
 export const DimensionsSize = {
   width: width,
@@ -134,6 +136,14 @@ export const ImageURL = {
   random: 'https://picsum.photos/500',
 };
 
-const Global = {COLORS, SIZES, FONTS, FAMILY, DimensionsSize, ImageURL};
+const Global = {
+  COLORS,
+  SIZES,
+  FONTS,
+  FAMILY,
+  DimensionsSize,
+  ImageURL,
+  Opacity,
+};
 
 export default Global;

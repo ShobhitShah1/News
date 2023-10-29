@@ -1,6 +1,9 @@
 apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
+
+apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -84,6 +87,10 @@ project.ext.react = [
     enableHermes: false,  // clean and rebuild if changing
 ]
 
+project.ext.vectoricons = [
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf', 'AntDesign.ttf', 'Entypo.ttf', 'Feather.ttf', 'FontAwesome.ttf', 'FontAwesome5.ttf', 'FontAwesome5Brands.ttf', 'FontAwesome6.ttf', 'FontAwesome6Brands.ttf', 'Fontisto.ttf', 'Foundation.ttf', 'Ionicons.ttf', 'MaterialCommunityIcons.ttf', 'Zocial.ttf', 'SimpleLineIcons.ttf', 'Octicons.ttf' ]
+]
+
 apply from: "../../node_modules/react-native/react.gradle"
 
 /**
@@ -94,12 +101,12 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+def enableSeparateBuildPerCPUArchitecture = true
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore.
@@ -243,6 +250,10 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
+            }
         }
     }
 
@@ -272,6 +283,7 @@ dependencies {
     implementation 'com.facebook.fresco:animated-gif:2.6.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
+
     implementation 'com.google.firebase:firebase-analytics'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

@@ -1,32 +1,40 @@
-import React, {useEffect, useRef} from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import {COLORS, FONTS} from '../../Common/Global';
 import {normalize} from '../../Common/GlobalSize';
-import Images from '../../Common/Images';
-import auth from '@react-native-firebase/auth';
-import {useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
 export default function SplashScreen({navigation}) {
-  const Status = useSelector(state => state?.auth?.user);
+  const Status = useSelector(state => state?.auth.user);
 
   useEffect(() => {
+    console.log('============== 👋 UserInfo 🚀 =============');
+    console.log('Status', Status);
     const timeout = setTimeout(() => {
       if (Status !== null && Status !== undefined) {
         navigation.replace('BottomSheet', {screen: 'HomeScreen'});
       } else {
-        navigation.replace('Auth', {screen: 'SignIn'});
+        navigation.replace('Auth', {screen: 'AuthHome'});
       }
     }, 2000);
-
     return () => clearTimeout(timeout);
   }, [Status, navigation]);
 
   return (
     <View style={styles.Container}>
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.black}
+        animated={true}
+        networkActivityIndicatorVisible={true}
+        translucent={true}
+      />
       <View style={styles.ImageView}>
-        <Text style={{...FONTS.h1, textAlign: 'center', color: COLORS.white}}>
-          Hy, Welcome 👋
+        <Text style={{...FONTS.h1, textAlign: 'center', color: COLORS.primary}}>
+          {Status !== null && Status !== undefined
+            ? `Hy, Welcome ${Status.name ? Status.name : Status.username} 🚀`
+            : 'Hy, Welcome 👋'}
         </Text>
       </View>
     </View>
@@ -42,6 +50,7 @@ const styles = StyleSheet.create({
   ImageView: {
     justifyContent: 'center',
     alignSelf: 'center',
+    width: width - normalize(20),
   },
   splashImage: {
     width: normalize(250),

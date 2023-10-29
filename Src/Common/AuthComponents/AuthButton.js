@@ -23,7 +23,7 @@ const AuthButton = ({lable, onPress, isLoading}) => {
           <Animated.Text style={styles.lable}>{lable}</Animated.Text>
           <AntDesign
             name="arrowright"
-            color={COLORS.black}
+            color={COLORS.white}
             size={18}
             style={styles.icon}
           />
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     borderRadius: SIZES.radius,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.primary,
     width: DimensionsSize.width - 40,
   },
   flex: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   lable: {
     ...FONTS.h3,
-    color: COLORS.black,
+    color: COLORS.white,
     textAlign: 'center',
   },
   icon: {

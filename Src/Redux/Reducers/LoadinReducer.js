@@ -9,12 +9,14 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ActionType.APP_MODE:
       return {
+        ...state,
         COLORMODE: action.BackgroundColoe,
         Loading: action.Loading,
         TextColor: action.TextColor,
       };
     case ActionType.LOADING:
       return {
+        ...state,
         Loading: action.Loading,
       };
 

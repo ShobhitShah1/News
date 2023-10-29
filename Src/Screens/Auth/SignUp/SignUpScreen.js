@@ -1,10 +1,11 @@
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
   KeyboardAvoidingView,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   Vibration,
@@ -15,7 +16,7 @@ import AuthButton from '../../../Common/AuthComponents/AuthButton';
 import OrView from '../../../Common/AuthComponents/OrView';
 import SocialButtons from '../../../Common/AuthComponents/SocialButtons';
 import CommonTextInput from '../../../Common/CommonTextInput';
-import {COLORS} from '../../../Common/Global';
+import {COLORS, SIZES} from '../../../Common/Global';
 import {normalize} from '../../../Common/GlobalSize';
 
 import Images from '../../../Common/Images';
@@ -30,6 +31,7 @@ import {useSelector} from 'react-redux';
 import PasswordInfo from '../../../Components/AuthComponents/PasswordInfo';
 import {GoogleSigninAction, Signup} from '../../../Redux/Actions/AuthAction';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import Loader from '../../../Common/Loader';
 
 const {width, height} = Dimensions.get('window');
 
@@ -37,18 +39,18 @@ export default function SignUpScreen({navigation}) {
   const toast = useToast();
   const isLoading = useSelector(state => state.Loading.Loading);
 
-  const [Username, setUsername] = React.useState(null);
-  const [Email, setEmail] = React.useState(null);
-  const [Password, setPassword] = React.useState(null);
-  const [showPassword, setshowPassword] = React.useState(true);
+  const [Username, setUsername] = useState(null);
+  const [Email, setEmail] = useState(null);
+  const [Password, setPassword] = useState(null);
+  const [showPassword, setshowPassword] = useState(true);
 
-  const [isNameFocused, setisNameFocused] = React.useState(false);
-  const [isEmailFocused, setisEmailFocused] = React.useState(false);
-  const [isPasswordFocused, setisPasswordFocused] = React.useState(false);
+  const [isNameFocused, setisNameFocused] = useState(false);
+  const [isEmailFocused, setisEmailFocused] = useState(false);
+  const [isPasswordFocused, setisPasswordFocused] = useState(false);
 
   // Bottom Sheet
-  const SheetRef = React.useRef(null);
-  const [isOpen, setIsopen] = React.useState(true);
+  const SheetRef = useRef(null);
+  const [isOpen, setIsopen] = useState(true);
 
   const snapPoints = ['23%'];
 
@@ -82,58 +84,46 @@ export default function SignUpScreen({navigation}) {
   const passwordStrength = calculatePasswordStrength(Password);
 
   const Validation = () => {
-    if (Username === null) {
-      toast.show('Enter Username', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    if (!Username) {
+      showToast('Enter Username', 'fail');
       Vibration.vibrate(50);
-    } else if (Email === null) {
-      toast.show('Enter Email', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    } else if (!Email) {
+      showToast('Enter Email', 'fail');
       Vibration.vibrate(50);
-    } else if (Password === null) {
-      toast.show('Enter Password', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+    } else if (!Password) {
+      showToast('Enter Password', 'fail');
       Vibration.vibrate(50);
     } else if (Password.length < 7) {
-      toast.show('Password must contain at least 7 characters', {
-        type: 'custom_toast',
-        title: null,
-        status: 'fail',
-      });
+      showToast('Password must contain at least 7 characters', 'fail');
       Vibration.vibrate(50);
     } else {
       handleSignup();
     }
   };
 
-  const handleSignup = async () => {
-    const data = {
-      Email: Email,
-      Password: Password,
-      Username: Username,
-    };
-    Signup({data: data, navigation: navigation, toast: toast});
+  const showToast = (message, status) => {
+    toast.show(message, {
+      type: 'custom_toast',
+      title: null,
+      status,
+    });
   };
 
-  const handleGoogleSignin = () => {
-    GoogleSignin.signIn().then(res => {
-      const data = {
-        username: res.user.name,
-        email: res.user.email,
-        profile: res.user.photo,
-        token: res.idToken,
-      };
-      GoogleSigninAction({data: data, toast: toast, navigation: navigation});
-    });
+  const handleSignup = async () => {
+    try {
+      NetInfo.fetch().then(state => {
+        if (state.isConnected) {
+          const data = {
+            Email: Email,
+            Password: Password,
+            Username: Username,
+          };
+          Signup({data: data, navigation: navigation, toast: toast});
+        }
+      });
+    } catch (error) {
+      showToast('Something went wrong', 'fail');
+    }
   };
 
   function hanndleOnOpen() {
@@ -147,20 +137,21 @@ export default function SignUpScreen({navigation}) {
   };
 
   const CheckFocusForAll = () => {
-    if (isNameFocused) {
-      return true;
-    } else if (isEmailFocused) {
-      return true;
-    } else if (isPasswordFocused) {
-      return true;
-    } else {
-      return false;
-    }
+    return isNameFocused || isEmailFocused || isPasswordFocused;
   };
 
   return (
     <View style={[styles.container, {backgroundColor: COLORS.black}]}>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={COLORS.black}
+        animated={true}
+        networkActivityIndicatorVisible={true}
+        translucent={true}
+      />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
         <Animated.View style={styles.headerContainer}>
           <Animated.View style={styles.headerView}>
             <Animated.Image source={Images.SignIn3} style={styles.images} />
@@ -192,7 +183,7 @@ export default function SignUpScreen({navigation}) {
                   onFocus={handleFocusName}
                   onBlur={handleBlurName}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   placeholder={'Enter username'}
                   placeholderTextColor={COLORS.white}
@@ -224,7 +215,7 @@ export default function SignUpScreen({navigation}) {
                   onFocus={handleFocusEmail}
                   onBlur={handleBlurEmail}
                   customStyleView={{
-                    borderColor: COLORS.white,
+                    borderColor: COLORS.primary,
                   }}
                   placeholder={'Enter email address'}
                   placeholderTextColor={COLORS.white}
@@ -269,7 +260,7 @@ export default function SignUpScreen({navigation}) {
                     borderColor:
                       isPasswordFocused === true
                         ? getColor(passwordStrength)
-                        : COLORS.white,
+                        : COLORS.primary,
                   }}
                   secureTextEntry={showPassword}
                   checkPassword={true}
@@ -302,13 +293,13 @@ export default function SignUpScreen({navigation}) {
         </KeyboardAvoidingView>
 
         <OrView />
-        <SocialButtons onGooglePress={() => handleGoogleSignin()} />
+        <SocialButtons />
 
         <View style={styles.AuthButtonView}>
           <AuthButton
             lable={'Create an account'}
             onPress={Validation}
-            isLoading={isLoading}
+            isLoading={false}
           />
         </View>
 
@@ -317,12 +308,14 @@ export default function SignUpScreen({navigation}) {
             Already have an account?{' '}
           </Text>
           <TouchableOpacity
+            activeOpacity={0.7}
             onPress={() => navigation.navigate('Auth', {screen: 'SignIn'})}>
-            <Text style={[styles.haveAnAccountText, {color: COLORS.white}]}>
+            <Text style={[styles.haveAnAccountText, {color: COLORS.primary}]}>
               Sign in
             </Text>
           </TouchableOpacity>
         </View>
+        {isLoading && <Loader size={100} />}
       </ScrollView>
 
       <BottomSheetModalProvider>

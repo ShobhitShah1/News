@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   login_type: null,
   hasSeenNavTooltip: true,
+  country: 'in',
 };
 
 export default (state = initialState, action) => {
@@ -13,14 +14,15 @@ export default (state = initialState, action) => {
         ...state,
         user: action.data,
         login_type: action.login_type,
+        country: action.country,
       };
-    case 'RESET_STATE':
-      return initialState;
     case ActionType.SET_HAS_SEEN_NAV_TOOLTIP:
       return {
         ...state,
         hasSeenNavTooltip: action.payload.hasSeenNavTooltip,
       };
+    case 'RESET_STATE':
+      return initialState;
     default:
       return state;
   }

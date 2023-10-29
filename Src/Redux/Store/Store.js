@@ -5,6 +5,7 @@ import AuthReducer from '../Reducers/AuthReducer';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadinReducer from '../Reducers/LoadinReducer';
+import UserActivityReducer from '../Reducers/UserActivityReducer';
 
 const persistConfig = {
   key: 'root',
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: AuthReducer,
   Loading: LoadinReducer,
+  Activity: UserActivityReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
