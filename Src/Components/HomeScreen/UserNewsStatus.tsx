@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { FC } from 'react'
 
-const HomeDataLoader = () => {
+const UserNewsStatus: FC = () => {
   return (
     <View>
-      <Text>HomeDataLoader</Text>
+      <Text>UserNewsStatus</Text>
     </View>
   )
 }
 
-export default HomeDataLoader
+export default UserNewsStatus
 
 const styles = StyleSheet.create({})

@@ -1,27 +1,37 @@
 import * as NetInfo from '@react-native-community/netinfo';
-import React, { FC, useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StatusBar, View } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
-import { useSelector } from 'react-redux';
-import CommonStyles from '../../Common/CommonStyles';
-import { COLORS } from '../../Common/Global';
+import {Text} from 'moti';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {
+  Animated,
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
+import {useToast} from 'react-native-toast-notifications';
+import {useSelector} from 'react-redux';
+import {COLORS} from '../../Common/Global';
 import FloatingButton from '../../Components/HomeScreen/FloatingButton';
 import GreetingByTime from '../../Components/HomeScreen/GreetingByTime';
-import {
-  GetEverythingNews,
-  GetTopHeadlinesNews,
-} from '../../Services/HomeService';
+import LatestNewsCard from '../../Components/HomeScreen/NewsCards/LatestNewsCard';
+import PopularNewsCard from '../../Components/HomeScreen/NewsCards/PopularNewsCard';
+import {useFetchRecentAndTopArticles} from '../../Hooks/useFetchRecentAndTopArticles';
 import styles from './styles';
 
 const HomeScreen: FC = () => {
   const toast = useToast();
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const userData = useSelector(state => state?.auth.user);
   const userName = userData?.username ? userData?.username : userData?.name;
 
   const [isConnected, setIsConnected] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [isArticleLoading, setisArticleLoading] = useState<boolean>(false);
+
+  // Hooks
+  const {isArticleLoading, GetLatestNews, GetPopularNews, fetchData} =
+    useFetchRecentAndTopArticles();
 
   const showToast = (message: string, status: string) => {
     toast.show(message, {
@@ -31,37 +41,9 @@ const HomeScreen: FC = () => {
     });
   };
 
-  const FetchRecentAndTopArticles = async () => {
-    setisArticleLoading(true);
-    try {
-      const recentResponse = await GetEverythingNews();
-      const topHeadlinesResponse = await GetTopHeadlinesNews();
-
-      if (recentResponse && recentResponse.articles) {
-        const latestRecentArticles = recentResponse.articles.slice(0, 15);
-        // Set latestRecentArticles
-      } else {
-        showToast('Failed to fetch recent articles data', 'fail');
-      }
-
-      if (topHeadlinesResponse && topHeadlinesResponse.articles) {
-        const latestTopHeadlines = topHeadlinesResponse.articles.slice(0, 15);
-        // Set topHeadlinesResponse
-      } else {
-        showToast('Failed to fetch top headlines data', 'fail');
-      }
-
-      setisArticleLoading(false);
-    } catch (error) {
-      showToast('An error occurred while fetching articles', 'fail');
-      setisArticleLoading(false);
-      console.error('Error fetching articles:', error);
-    }
-  };
-
   const onRefresh = () => {
     if (isConnected) {
-      FetchRecentAndTopArticles();
+      fetchData();
     } else {
       showToast('Please check your internet connection', 'fail');
     }
@@ -78,31 +60,65 @@ const HomeScreen: FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (isConnected) {
-      FetchRecentAndTopArticles();
-    } else {
-      showToast('Please check your internet connection', 'fail');
-    }
-  }, [isConnected]);
-
   return (
-    <React.Fragment>
-      <StatusBar barStyle={'light-content'} backgroundColor={COLORS.black} />
+    <View style={{backgroundColor: COLORS.black, flex: 1}}>
       <ScrollView
-        style={[CommonStyles.container]}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
+        <StatusBar barStyle={'light-content'} backgroundColor={COLORS.black} />
         <View style={[styles.HomeContainer]}>
-          <View style={styles.HeaderNameView}>
+          {/* Top Header View */}
+          <View style={[styles.HeaderNameView]}>
             <GreetingByTime userName={userName} onPress={() => {}} />
+          </View>
+
+          <View style={styles.AllNewsContainerView}>
+            {/* Global News View */}
+            <View style={styles.NewsContainer}>
+              <FlatList
+                horizontal
+                data={GetPopularNews}
+                ListHeaderComponent={<Text style={{paddingTop: 20}}>Popular News</Text>}
+                renderItem={({item, index}) => (
+                  <PopularNewsCard
+                    data={item}
+                    index={index}
+                    isArticleLoading={isArticleLoading}
+                  />
+                )}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+              />
+            </View>
+
+            {/* User's News View */}
+            <View style={styles.NewsContainer}>
+              <FlatList
+                horizontal
+                data={GetPopularNews}
+                ListHeaderComponent={<Text>Latest News</Text>}
+                renderItem={({item, index}) => (
+                  <LatestNewsCard
+                    data={item}
+                    index={index}
+                    isArticleLoading={isArticleLoading}
+                  />
+                )}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
 
       <FloatingButton />
-    </React.Fragment>
+    </View>
   );
 };
 
