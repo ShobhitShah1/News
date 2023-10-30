@@ -21,7 +21,6 @@ export const GetEverythingNews = async () => {
 };
 
 export const GetTopHeadlinesNews = async () => {
-  // const selectedCountry = useSelector(state => state.auth.country);
   try {
     const axiosInstance = await createAxiosInstance('business', 'in');
     const response = await axiosInstance.get('top-headlines');

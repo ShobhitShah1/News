@@ -1,5 +1,4 @@
 import * as NetInfo from '@react-native-community/netinfo';
-import {Text} from 'moti';
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {
   Animated,
@@ -8,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   View,
+  Text,
 } from 'react-native';
 import {useToast} from 'react-native-toast-notifications';
 import {useSelector} from 'react-redux';
@@ -18,9 +18,12 @@ import LatestNewsCard from '../../Components/HomeScreen/NewsCards/LatestNewsCard
 import PopularNewsCard from '../../Components/HomeScreen/NewsCards/PopularNewsCard';
 import {useFetchRecentAndTopArticles} from '../../Hooks/useFetchRecentAndTopArticles';
 import styles from './styles';
+import {useIsFocused} from '@react-navigation/native';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
 const HomeScreen: FC = () => {
   const toast = useToast();
+  const isFocused = useIsFocused();
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const userData = useSelector(state => state?.auth.user);
@@ -53,6 +56,9 @@ const HomeScreen: FC = () => {
     const unsubscribe = NetInfo.addEventListener(state => {
       if (state && state.isConnected) {
         setIsConnected(state.isConnected);
+        fetchData();
+      } else {
+        showToast('Please check your internet connection', 'fail');
       }
     });
     return () => {
@@ -83,11 +89,12 @@ const HomeScreen: FC = () => {
               <FlatList
                 horizontal
                 data={GetPopularNews}
-                ListHeaderComponent={<Text style={{paddingTop: 20}}>Popular News</Text>}
+                style={{margin: verticalScale(10)}}
                 renderItem={({item, index}) => (
                   <PopularNewsCard
                     data={item}
                     index={index}
+                    isFocused={isFocused}
                     isArticleLoading={isArticleLoading}
                   />
                 )}
@@ -100,8 +107,7 @@ const HomeScreen: FC = () => {
             <View style={styles.NewsContainer}>
               <FlatList
                 horizontal
-                data={GetPopularNews}
-                ListHeaderComponent={<Text>Latest News</Text>}
+                data={GetLatestNews}
                 renderItem={({item, index}) => (
                   <LatestNewsCard
                     data={item}

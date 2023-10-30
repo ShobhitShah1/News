@@ -5,13 +5,12 @@ import {normalize} from '../../Common/GlobalSize';
 const styles = StyleSheet.create({
   HomeContainer: {
     marginVertical: SIZES.size20,
-    marginHorizontal: SIZES.size15,
     paddingBottom: normalize(40),
   },
   HeaderNameView: {
     flexDirection: 'row',
+    marginHorizontal: SIZES.size15,
     justifyContent: 'space-between',
-    // marginBottom: normalize(10)
   },
   headerName: {
     ...FONTS.h2,

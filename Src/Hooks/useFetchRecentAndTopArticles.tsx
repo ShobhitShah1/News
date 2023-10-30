@@ -1,17 +1,23 @@
 import {useState, useEffect} from 'react';
 import {GetEverythingNews, GetTopHeadlinesNews} from '../Services/HomeService';
 import {ArticleType} from '../types/ArticleType';
-
+import { useToast } from 'react-native-toast-notifications';
+ 
 // Define the custom hook
 export function useFetchRecentAndTopArticles() {
+  const toast = useToast();
   const [isArticleLoading, setArticleLoading] = useState<boolean>(false);
   const [GetLatestNews, setLatestNews] = useState<ArticleType[]>([]);
   const [GetPopularNews, setPopularNews] = useState<ArticleType[]>([]);
 
   const showToast = (message: string, status: string) => {
-    // Implement your toast notification logic here
+    toast.show(message, {
+      type: 'custom_toast',
+      title: 'Error',
+      status: status,
+    });
   };
-
+ 
   useEffect(() => {
     fetchData();
   }, []);
