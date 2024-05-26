@@ -1,10 +1,10 @@
-# AKIO News App 📰✨
+# News App 📰✨
 
-Welcome to AKIO – Your Gateway to Informed Living!
+Welcome to News App – Your Gateway to Informed Living!
 
 ## Overview
 
-AKIO, where information meets innovation, is not just a news app; it's your dynamic companion in staying abreast of the world's pulse. With a sleek interface, personalized news curation, and real-time updates, AKIO transforms news consumption into an immersive journey.
+News App, where information meets innovation, is not just a news app, it's your dynamic companion in staying abreast of the world's pulse. With a sleek interface, personalized news curation, and real-time updates, News App transforms news consumption into an immersive journey.
 
 ## Features
 
@@ -16,12 +16,12 @@ AKIO, where information meets innovation, is not just a news app; it's your dyna
 
 - **Bookmark and Broadcast:** Save the crème de la crème of articles and effortlessly share them with your social circles.
 
-- **Read Beyond Connectivity:** Whether you're in the heart of the city or off the grid, AKIO ensures you have your news fix with offline reading.
+- **Read Beyond Connectivity:** Whether you're in the heart of the city or off the grid, News App ensures you have your news fix with offline reading.
 
-- **Versatility Unleashed:** AKIO seamlessly integrates into your daily routine, available on both Android and iOS for a unified, cross-platform experience on your favorite devices.
+- **Versatility Unleashed:** News App seamlessly integrates into your daily routine, available on both Android and iOS for a unified, cross-platform experience on your favorite devices.
 
-Join AKIO and elevate your news experience – where information is not just delivered; it's curated for you! 🌐📰✨
+Join News App and elevate your news experience – where information is not just delivered, it's curated for you! 🌐📰✨
 
 ---
 
-**Ready to Dive In? Download AKIO Now and Embark on Your News Adventure!** 🚀📲
+**Ready to Dive In? Download News App Now and Embark on Your News Adventure!** 🚀📲
